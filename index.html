@@ -580,13 +580,13 @@
       <!-- filled by JS -->
     </div>
 
-    <!-- Tabla por propiedad -->
-    <div class="chart-title" style="margin-bottom:16px">Desglose por propiedad</div>
+    <!-- Tabla por unidad -->
+    <div class="chart-title" style="margin-bottom:16px">Desglose por unidad</div>
     <div class="table-wrapper">
       <table class="prop-table" id="prop-table-semanal">
         <thead>
           <tr>
-            <th>Propiedad</th>
+            <th>Unidad</th>
             <th>Total cuentas</th>
             <th>Visitas nuevas</th>
             <th>🍹 Margaritas</th>
@@ -611,7 +611,16 @@
 
     <div class="section-header">
       <h1 class="section-title">Acumulado mensual</h1>
-      <span class="section-sub">Febrero — Abril 2025 · Semanas 6–15</span>
+      <span class="section-sub" id="mensual-sub">Abril 2026</span>
+    </div>
+
+    <!-- Month selector -->
+    <div class="period-bar" id="month-selector">
+      <button class="period-btn active" onclick="selectMonth('abril', this)">Abril</button>
+      <button class="period-btn" onclick="selectMonth('marzo', this)">Marzo</button>
+      <button class="period-btn" onclick="selectMonth('febrero', this)">Febrero</button>
+      <button class="period-btn" onclick="selectMonth('enero', this)">Enero</button>
+      <button class="period-btn" onclick="selectMonth('todo', this)">Todo el período</button>
     </div>
 
     <!-- KPIs mensuales -->
@@ -623,19 +632,19 @@
 
     <!-- Tendencia semanal (SVG chart) -->
     <div class="chart-section">
-      <div class="chart-title">Tendencia Google Reviews por propiedad — Semanas 6 a 15</div>
+      <div class="chart-title">Tendencia Google Reviews por unidad — Semanas 6 a 15</div>
       <div class="chart-container">
         <svg class="chart-svg" id="trend-chart" height="160"></svg>
       </div>
     </div>
 
     <!-- Tabla acumulado mensual -->
-    <div class="chart-title" style="margin-bottom:16px">Acumulado por propiedad</div>
+    <div class="chart-title" style="margin-bottom:16px">Acumulado por unidad</div>
     <div class="table-wrapper">
       <table class="prop-table">
         <thead>
           <tr>
-            <th>Propiedad</th>
+            <th>Unidad</th>
             <th>Total cuentas</th>
             <th>Visitas nuevas</th>
             <th>🍹 Margaritas</th>
@@ -679,10 +688,10 @@ const DATA_SEMANAL = {
   // cumples = Birthday tag col I de GuestCenter (reservaciones etiquetadas como cumpleaños)
   // cuentas, nuevas, margs, pasteles, tacos, frec = captura manual semanal
   S15: [
-    { prop: 'Cuerno Calzada', cuentas: 457,  nuevas: 260, margs: 175, pasteles: 115, cumples: 65, tacos: 0, frec: 197 },
-    { prop: 'Cuerno Andares', cuentas: 647,  nuevas: 356, margs: 94,  pasteles: 97,  cumples: 79, tacos: 0, frec: 291 },
-    { prop: 'Cuerno Masaryk', cuentas: 501,  nuevas: 346, margs: 256, pasteles: 180, cumples: 73, tacos: 0, frec: 155 },
-    { prop: 'Cuerno NY',      cuentas: 0,    nuevas: 0,   margs: 0,   pasteles: 0,   cumples: 0,  tacos: 0, frec: 0   },
+    { prop: 'Cuerno Calzada', cuentas: 457,  nuevas: 260, margs: 175, pasteles: 115, cumples: 65, tacos: 17,  frec: 197 },
+    { prop: 'Cuerno Andares', cuentas: 647,  nuevas: 356, margs: 94,  pasteles: 97,  cumples: 79, tacos: 28,  frec: 291 },
+    { prop: 'Cuerno Masaryk', cuentas: 501,  nuevas: 346, margs: 256, pasteles: 180, cumples: 73, tacos: 85,  frec: 155 },
+    { prop: 'Cuerno NY',      cuentas: 0,    nuevas: 0,   margs: 0,   pasteles: 0,   cumples: 0,  tacos: 0,   frec: 0   },
   ],
   S14: [
     { prop: 'Cuerno Calzada', cuentas: 210, nuevas: 88, margs: 72, pasteles: 5, cumples: 73, tacos: 58, frec: 90 },
@@ -760,7 +769,7 @@ function getReviewsForWeek(semKey) {
   const num = parseInt(semKey.replace('S',''));
   const weekData = REVIEWS_HISTORICO[num] || {};
   return {
-    propiedades: PROPIEDADES.map(p => ({
+    unidades: PROPIEDADES.map(p => ({
       prop: p,
       google:      weekData[p]?.google      ?? null,
       opentable:   weekData[p]?.opentable   ?? null,
@@ -773,7 +782,7 @@ function getReviewsForWeek(semKey) {
 function getReviewsMensual() {
   // Average across all weeks for each property
   return {
-    propiedades: PROPIEDADES.map(p => {
+    unidades: PROPIEDADES.map(p => {
       const weeks = Object.values(REVIEWS_HISTORICO);
       const avg = (key) => {
         const vals = weeks.map(w => w[p]?.[key]).filter(v => v !== null && v !== undefined);
@@ -784,8 +793,25 @@ function getReviewsMensual() {
   };
 }
 
-// Tendencia reviews histórica por propiedad
-const SEMANAS_ORDEN = [6,7,8,9,10,11,12,13,14,15];
+// Semanas por mes (2026)
+const MESES = {
+  enero:   { label: 'Enero 2026',            semanas: ['S1','S2','S3','S4'] },
+  febrero: { label: 'Febrero 2026',           semanas: ['S5','S6','S7','S8','S9'] },
+  marzo:   { label: 'Marzo 2026',             semanas: ['S10','S11','S12','S13'] },
+  abril:   { label: 'Abril 2026',             semanas: ['S14','S15'] },
+  todo:    { label: 'Enero — Abril 2026',     semanas: ['S6','S7','S8','S9','S10','S11','S12','S13','S14','S15'] },
+};
+
+let currentMes = 'abril';
+
+function selectMonth(mes, btn) {
+  currentMes = mes;
+  document.querySelectorAll('#month-selector .period-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderMensual();
+  setTimeout(renderTrendChart, 50);
+}
+
 const PROP_COLORS = {
   'Cuerno Calzada': '#9F9782',
   'Cuerno Andares': '#7a9a78',
@@ -837,7 +863,7 @@ function renderKPIs(data, containerId) {
     { label: 'Pasteles entregados',    value: fmt(pPasteles), meta: META_PASTELES,   fill: pPasteles, raw: `${totalPasteles} de ${totalCumples} cumpleaños` },
     { label: 'Tacos taqueros',         value: fmt(pTacos),    meta: META_TACOS,      fill: pTacos,    raw: `${totalTacos} de ${totalCuentas} cuentas` },
     { label: 'Clientes frecuentes',    value: fmt(pFrec),     meta: META_FRECUENTES, fill: pFrec,     raw: `${totalFrec} de ${totalCuentas} cuentas` },
-    { label: 'Total cuentas',          value: totalCuentas,   meta: null,            fill: null,      raw: 'todas las propiedades' },
+    { label: 'Total cuentas',          value: totalCuentas,   meta: null,            fill: null,      raw: 'todas las unidades' },
     { label: 'Visitas nuevas',         value: totalNuevas,    meta: null,            fill: null,      raw: `${fmt(pct(totalNuevas, totalCuentas))} del total` },
   ];
 
@@ -862,7 +888,7 @@ function renderKPIs(data, containerId) {
 
 function renderReviews(reviewsData, containerId) {
   const el = document.getElementById(containerId);
-  const props = reviewsData.propiedades || [];
+  const props = reviewsData.unidades || [];
 
   // Consolidated avg cards (4 platforms)
   const platforms = [
@@ -900,7 +926,7 @@ function renderReviews(reviewsData, containerId) {
       <div class="reviews-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:16px">${avgCards}</div>
       <table class="prop-table">
         <thead><tr>
-          <th>Propiedad</th>
+          <th>Unidad</th>
           <th style="text-align:center">Google</th>
           <th style="text-align:center">OpenTable</th>
           <th style="text-align:center">TripAdvisor</th>
@@ -1076,18 +1102,36 @@ function renderSemanal() {
 }
 
 function renderMensual() {
-  // Sum all available weeks for experiencias
-  const allWeeks = Object.values(DATA_SEMANAL);
+  const mes = MESES[currentMes];
+  const semanasDelMes = mes.semanas.filter(s => DATA_SEMANAL[s]);
+
+  // Aggregate only weeks in the selected month
   const mensualData = PROPIEDADES.map((p, i) => {
     let total = { prop: p, cuentas: 0, nuevas: 0, margs: 0, pasteles: 0, cumples: 0, tacos: 0, frec: 0 };
-    allWeeks.forEach(week => {
-      const d = week[i];
+    semanasDelMes.forEach(sem => {
+      const d = DATA_SEMANAL[sem][i];
       if (d) { total.cuentas+=d.cuentas; total.nuevas+=d.nuevas; total.margs+=d.margs; total.pasteles+=d.pasteles; total.cumples+=d.cumples; total.tacos+=d.tacos; total.frec+=d.frec; }
     });
     return total;
   });
+
+  // Update subtitle
+  document.getElementById('mensual-sub').textContent = mes.label + ' · Sems ' + semanasDelMes.map(s=>s.replace('S','')).join(', ');
+
+  // Reviews: average of the month's weeks
+  const semNums = semanasDelMes.map(s => parseInt(s.replace('S','')));
+  const reviewsMes = {
+    unidades: PROPIEDADES.map(p => {
+      const avg = (key) => {
+        const vals = semNums.map(n => REVIEWS_HISTORICO[n]?.[p]?.[key]).filter(v => v !== null && v !== undefined);
+        return vals.length ? Math.round((vals.reduce((a,b)=>a+b,0)/vals.length)*10)/10 : null;
+      };
+      return { prop: p, google: avg('google'), opentable: avg('opentable'), tripadvisor: avg('tripadvisor'), facebook: avg('facebook') };
+    })
+  };
+
   renderKPIs(mensualData, 'kpi-mensual');
-  renderReviews(getReviewsMensual(), 'reviews-mensual');
+  renderReviews(reviewsMes, 'reviews-mensual');
   renderTable(mensualData, 'prop-tbody-mensual');
   renderRanking(mensualData, 'ranking-mensual');
 }
