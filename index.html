@@ -557,7 +557,11 @@
     </div>
 
     <div class="period-bar" id="week-selector">
-      <button class="period-btn active" onclick="selectWeek('S15', this)">Sem 15</button>
+      <button class="period-btn active" onclick="selectWeek('S19', this)">Sem 19</button>
+      <button class="period-btn" onclick="selectWeek('S18', this)">Sem 18</button>
+      <button class="period-btn" onclick="selectWeek('S17', this)">Sem 17</button>
+      <button class="period-btn" onclick="selectWeek('S16', this)">Sem 16</button>
+      <button class="period-btn" onclick="selectWeek('S15', this)">Sem 15</button>
       <button class="period-btn" onclick="selectWeek('S14', this)">Sem 14</button>
       <button class="period-btn" onclick="selectWeek('S13', this)">Sem 13</button>
       <button class="period-btn" onclick="selectWeek('S12', this)">Sem 12</button>
@@ -616,7 +620,8 @@
 
     <!-- Month selector -->
     <div class="period-bar" id="month-selector">
-      <button class="period-btn active" onclick="selectMonth('abril', this)">Abril</button>
+      <button class="period-btn active" onclick="selectMonth('mayo', this)">Mayo</button>
+      <button class="period-btn" onclick="selectMonth('abril', this)">Abril</button>
       <button class="period-btn" onclick="selectMonth('marzo', this)">Marzo</button>
       <button class="period-btn" onclick="selectMonth('febrero', this)">Febrero</button>
       <button class="period-btn" onclick="selectMonth('enero', this)">Enero</button>
@@ -662,6 +667,11 @@
     <div class="chart-title" style="margin-bottom:16px">Ranking de ejecución — mes</div>
     <div class="ranking-list" id="ranking-mensual"></div>
 
+    <!-- Mystery Shopper -->
+    <div class="divider"></div>
+    <div class="chart-title" style="margin-bottom:16px">🕵️ Mystery Shopper — calificación mensual</div>
+    <div id="mystery-shopper-section"></div>
+
   </div>
 
 </main>
@@ -673,6 +683,32 @@
 
 <script>
 // =====================
+// Ticket promedio por unidad por semana (pesos)
+const TICKET_DATA = {
+  S6:  {'Cuerno Calzada': 956,  'Cuerno Andares': 1012, 'Cuerno Masaryk': 1290, 'Cuerno NY': 0 },
+  S7:  {'Cuerno Calzada': 1076, 'Cuerno Andares': 1082, 'Cuerno Masaryk': 1389, 'Cuerno NY': 0 },
+  S8:  {'Cuerno Calzada': 1205, 'Cuerno Andares': 1090, 'Cuerno Masaryk': 1440, 'Cuerno NY': 0 },
+  S9:  {'Cuerno Calzada': 1308, 'Cuerno Andares': 1018, 'Cuerno Masaryk': 1428, 'Cuerno NY': 0 },
+  S10: {'Cuerno Calzada': 1185, 'Cuerno Andares': 1008, 'Cuerno Masaryk': 1530, 'Cuerno NY': 0 },
+  S11: {'Cuerno Calzada': 1247, 'Cuerno Andares': 1162, 'Cuerno Masaryk': 1480, 'Cuerno NY': 0 },
+  S12: {'Cuerno Calzada': 1216, 'Cuerno Andares': 1068, 'Cuerno Masaryk': 1386, 'Cuerno NY': 0 },
+  S13: {'Cuerno Calzada': 1181, 'Cuerno Andares': 1071, 'Cuerno Masaryk': 1383, 'Cuerno NY': 0 },
+  S14: {'Cuerno Calzada': 1352, 'Cuerno Andares': 1226, 'Cuerno Masaryk': 1506, 'Cuerno NY': 0 },
+  S15: {'Cuerno Calzada': 1148, 'Cuerno Andares': 1068, 'Cuerno Masaryk': 1507, 'Cuerno NY': 0 },
+  S16: {'Cuerno Calzada': 1415, 'Cuerno Andares': 1253, 'Cuerno Masaryk': 1647, 'Cuerno NY': 0 },
+  S17: {'Cuerno Calzada': 1479, 'Cuerno Andares': 1222, 'Cuerno Masaryk': 1655, 'Cuerno NY': 0 },
+  S18: {'Cuerno Calzada': 1440, 'Cuerno Andares': 1287, 'Cuerno Masaryk': 1453, 'Cuerno NY': 0 },
+  S19: {'Cuerno Calzada': 1282, 'Cuerno Andares': 1232, 'Cuerno Masaryk': 1648, 'Cuerno NY': 0 },
+};
+
+// Mystery Shopper — calificación mensual sobre 100
+const MYSTERY_SHOPPER = {
+  enero:   { 'Cuerno Calzada': 94, 'Cuerno Andares': 99, 'Cuerno Masaryk': 98, 'Cuerno NY': 89 },
+  febrero: { 'Cuerno Calzada': 95, 'Cuerno Andares': 98, 'Cuerno Masaryk': 96, 'Cuerno NY': 88 },
+  marzo:   { 'Cuerno Calzada': 88, 'Cuerno Andares': 93, 'Cuerno Masaryk': 83, 'Cuerno NY': 93 },
+  abril:   { 'Cuerno Calzada': 95, 'Cuerno Andares': 97, 'Cuerno Masaryk': 95, 'Cuerno NY': 96 },
+};
+
 // DATA — actualizar cada semana
 // =====================
 
@@ -763,6 +799,10 @@ const REVIEWS_HISTORICO = {
   13: { 'Cuerno Andares': {google:4.9,opentable:4.8,tripadvisor:4.9,facebook:100}, 'Cuerno Calzada': {google:4.9,opentable:4.7,tripadvisor:4.9,facebook:68},  'Cuerno Masaryk': {google:4.8,opentable:4.8,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.8,opentable:null,tripadvisor:4.2,facebook:null} },
   14: { 'Cuerno Andares': {google:4.9,opentable:4.6,tripadvisor:4.9,facebook:100}, 'Cuerno Calzada': {google:4.9,opentable:4.8,tripadvisor:4.9,facebook:68},  'Cuerno Masaryk': {google:4.8,opentable:2.7,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.8,opentable:null,tripadvisor:4.2,facebook:null} },
   15: { 'Cuerno Andares': {google:4.9,opentable:4.8,tripadvisor:4.9,facebook:100}, 'Cuerno Calzada': {google:4.9,opentable:4.7,tripadvisor:4.9,facebook:68},  'Cuerno Masaryk': {google:4.8,opentable:4.7,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.8,opentable:4.7,tripadvisor:4.2,facebook:null} },
+  16: { 'Cuerno Calzada': {google:4.9,opentable:4.7,tripadvisor:4.9,facebook:68},  'Cuerno Andares': {google:4.9,opentable:4.7,tripadvisor:4.9,facebook:100}, 'Cuerno Masaryk': {google:4.8,opentable:4.7,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.8,opentable:4.7,tripadvisor:4.2,facebook:null} },
+  17: { 'Cuerno Calzada': {google:4.9,opentable:4.7,tripadvisor:4.9,facebook:68},  'Cuerno Andares': {google:4.9,opentable:4.7,tripadvisor:4.9,facebook:100}, 'Cuerno Masaryk': {google:4.8,opentable:4.7,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.8,opentable:4.7,tripadvisor:4.2,facebook:null} },
+  18: { 'Cuerno Calzada': {google:4.9,opentable:4.7,tripadvisor:4.9,facebook:68},  'Cuerno Andares': {google:4.9,opentable:4.8,tripadvisor:4.9,facebook:100}, 'Cuerno Masaryk': {google:4.8,opentable:4.7,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.8,opentable:4.7,tripadvisor:4.2,facebook:null} },
+  19: { 'Cuerno Calzada': {google:4.9,opentable:4.7,tripadvisor:4.9,facebook:68},  'Cuerno Andares': {google:4.9,opentable:4.8,tripadvisor:4.9,facebook:100}, 'Cuerno Masaryk': {google:4.8,opentable:4.7,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.8,opentable:4.7,tripadvisor:4.3,facebook:null} },
 };
 
 function getReviewsForWeek(semKey) {
@@ -795,14 +835,15 @@ function getReviewsMensual() {
 
 // Semanas por mes (2026)
 const MESES = {
-  enero:   { label: 'Enero 2026',            semanas: ['S1','S2','S3','S4'] },
-  febrero: { label: 'Febrero 2026',           semanas: ['S5','S6','S7','S8','S9'] },
-  marzo:   { label: 'Marzo 2026',             semanas: ['S10','S11','S12','S13'] },
-  abril:   { label: 'Abril 2026',             semanas: ['S14','S15'] },
-  todo:    { label: 'Enero — Abril 2026',     semanas: ['S6','S7','S8','S9','S10','S11','S12','S13','S14','S15'] },
+  mayo:    { label: 'Mayo 2026',          semanas: ['S16','S17','S18','S19'] },
+  abril:   { label: 'Abril 2026',         semanas: ['S14','S15'] },
+  marzo:   { label: 'Marzo 2026',         semanas: ['S10','S11','S12','S13'] },
+  febrero: { label: 'Febrero 2026',       semanas: ['S5','S6','S7','S8','S9'] },
+  enero:   { label: 'Enero 2026',         semanas: ['S1','S2','S3','S4'] },
+  todo:    { label: 'Enero — Mayo 2026',  semanas: ['S6','S7','S8','S9','S10','S11','S12','S13','S14','S15','S16','S17','S18','S19'] },
 };
 
-let currentMes = 'abril';
+let currentMes = 'mayo';
 
 function selectMonth(mes, btn) {
   currentMes = mes;
@@ -823,7 +864,7 @@ const PROP_COLORS = {
 // UTILS
 // =====================
 
-let currentWeek = 'S15';
+let currentWeek = 'S19';
 
 function pct(a, b) { return b > 0 ? a / b : 0; }
 function fmt(n)    { return Math.round(n * 100) + '%'; }
@@ -853,6 +894,11 @@ function renderKPIs(data, containerId) {
   const totalTacos    = data.reduce((s, d) => s + d.tacos, 0);
   const totalFrec     = data.reduce((s, d) => s + d.frec, 0);
 
+  // Ticket promedio — from TICKET_DATA lookup
+  const ticketWeekData = TICKET_DATA[currentWeek] || {};
+  const totalTicketRev = data.reduce((s, d) => s + ((ticketWeekData[d.prop] || 0) * (d.cuentas || 0)), 0);
+  const avgTicket = totalCuentas > 0 ? Math.round(totalTicketRev / totalCuentas) : 0;
+
   const pMargs    = pct(totalMargs, totalNuevas);
   const pPasteles = pct(totalPasteles, totalCumples);
   const pTacos    = pct(totalTacos, totalCuentas);
@@ -865,6 +911,7 @@ function renderKPIs(data, containerId) {
     { label: 'Clientes frecuentes',    value: fmt(pFrec),     meta: META_FRECUENTES, fill: pFrec,     raw: `${totalFrec} de ${totalCuentas} cuentas` },
     { label: 'Total cuentas',          value: totalCuentas,   meta: null,            fill: null,      raw: 'todas las unidades' },
     { label: 'Visitas nuevas',         value: totalNuevas,    meta: null,            fill: null,      raw: `${fmt(pct(totalNuevas, totalCuentas))} del total` },
+    { label: 'Ticket promedio',        value: avgTicket > 0 ? '$' + avgTicket.toLocaleString('es-MX') : '—', meta: null, fill: null, raw: 'promedio ponderado' },
   ];
 
   const el = document.getElementById(containerId);
@@ -1101,6 +1148,34 @@ function renderSemanal() {
   renderRanking(data, 'ranking-semanal');
 }
 
+function renderMystery(mes) {
+  const el = document.getElementById('mystery-shopper-section');
+  if (!el) return;
+  const meses = (mes === 'todo' || mes === 'mayo') ? ['enero','febrero','marzo','abril'] : (MYSTERY_SHOPPER[mes] ? [mes] : ['enero','febrero','marzo','abril']);
+  const mesLabels = { enero:'Enero', febrero:'Febrero', marzo:'Marzo', abril:'Abril' };
+  const thMeses = meses.map(m => `<th style="text-align:center">${mesLabels[m]||m}</th>`).join('');
+  function msColor(val) {
+    if (val===null) return 'color:var(--taupe-light)';
+    if (val>=90) return 'color:var(--green)';
+    if (val>=80) return 'color:var(--yellow)';
+    return 'color:var(--red)';
+  }
+  const PROPS_MS = ['Cuerno Calzada','Cuerno Andares','Cuerno Masaryk','Cuerno NY'];
+  const rows = PROPS_MS.map(p => {
+    const cells = meses.map(m => {
+      const val = MYSTERY_SHOPPER[m]?.[p] ?? null;
+      return `<td style="text-align:center;font-size:15px;font-weight:400;${msColor(val)}">${val!==null?val+'%':'—'}</td>`;
+    }).join('');
+    return `<tr><td class="prop-name">${p}</td>${cells}</tr>`;
+  }).join('');
+  const avgCells = meses.map(m => {
+    const vals = PROPS_MS.map(p=>MYSTERY_SHOPPER[m]?.[p]).filter(v=>v!==null&&v!==undefined);
+    const avg = vals.length ? Math.round(vals.reduce((a,b)=>a+b,0)/vals.length) : null;
+    return `<td style="text-align:center;font-size:13px;font-weight:500;${msColor(avg)}">${avg!==null?avg+'%':'—'}</td>`;
+  }).join('');
+  el.innerHTML = `<table class="prop-table"><thead><tr><th>Unidad</th>${thMeses}</tr></thead><tbody>${rows}</tbody><tfoot><tr><td style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--taupe-light);padding:14px 20px 14px 0">Promedio</td>${avgCells}</tr></tfoot></table><div style="margin-top:10px;font-size:10px;color:var(--taupe-light);letter-spacing:0.08em">🟢 ≥ 90%  &nbsp; 🟡 80–89%  &nbsp; 🔴 &lt; 80%</div>`;
+}
+
 function renderMensual() {
   const mes = MESES[currentMes];
   const semanasDelMes = mes.semanas.filter(s => DATA_SEMANAL[s]);
@@ -1134,6 +1209,7 @@ function renderMensual() {
   renderReviews(reviewsMes, 'reviews-mensual');
   renderTable(mensualData, 'prop-tbody-mensual');
   renderRanking(mensualData, 'ranking-mensual');
+  renderMystery(currentMes);
 }
 
 // Date
