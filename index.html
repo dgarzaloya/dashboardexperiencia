@@ -201,7 +201,7 @@
   /* KPI GRID */
   .kpi-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 1px;
     background: var(--border);
     margin-bottom: 40px;
@@ -557,11 +557,7 @@
     </div>
 
     <div class="period-bar" id="week-selector">
-      <button class="period-btn active" onclick="selectWeek('S19', this)">Sem 19</button>
-      <button class="period-btn" onclick="selectWeek('S18', this)">Sem 18</button>
-      <button class="period-btn" onclick="selectWeek('S17', this)">Sem 17</button>
-      <button class="period-btn" onclick="selectWeek('S16', this)">Sem 16</button>
-      <button class="period-btn" onclick="selectWeek('S15', this)">Sem 15</button>
+      <button class="period-btn active" onclick="selectWeek('S15', this)">Sem 15</button>
       <button class="period-btn" onclick="selectWeek('S14', this)">Sem 14</button>
       <button class="period-btn" onclick="selectWeek('S13', this)">Sem 13</button>
       <button class="period-btn" onclick="selectWeek('S12', this)">Sem 12</button>
@@ -591,9 +587,6 @@
         <thead>
           <tr>
             <th>Unidad</th>
-            <th>Comensales</th>
-            <th>Ticket Prom.</th>
-            <th>1a Visita</th>
             <th>Total cuentas</th>
             <th>Visitas nuevas</th>
             <th>🍹 Margaritas</th>
@@ -623,8 +616,7 @@
 
     <!-- Month selector -->
     <div class="period-bar" id="month-selector">
-      <button class="period-btn active" onclick="selectMonth('mayo', this)">Mayo</button>
-      <button class="period-btn" onclick="selectMonth('abril', this)">Abril</button>
+      <button class="period-btn active" onclick="selectMonth('abril', this)">Abril</button>
       <button class="period-btn" onclick="selectMonth('marzo', this)">Marzo</button>
       <button class="period-btn" onclick="selectMonth('febrero', this)">Febrero</button>
       <button class="period-btn" onclick="selectMonth('enero', this)">Enero</button>
@@ -653,9 +645,6 @@
         <thead>
           <tr>
             <th>Unidad</th>
-            <th>Comensales</th>
-            <th>Ticket Prom.</th>
-            <th>1a Visita</th>
             <th>Total cuentas</th>
             <th>Visitas nuevas</th>
             <th>🍹 Margaritas</th>
@@ -672,11 +661,6 @@
     <div class="divider"></div>
     <div class="chart-title" style="margin-bottom:16px">Ranking de ejecución — mes</div>
     <div class="ranking-list" id="ranking-mensual"></div>
-
-    <!-- Mystery Shopper -->
-    <div class="divider"></div>
-    <div class="chart-title" style="margin-bottom:16px">🕵️ Mystery Shopper — calificación mensual</div>
-    <div id="mystery-shopper-section"></div>
 
   </div>
 
@@ -703,112 +687,82 @@ const META_FRECUENTES = 0.40;
 const DATA_SEMANAL = {
   // cumples = Birthday tag col I de GuestCenter (reservaciones etiquetadas como cumpleaños)
   // cuentas, nuevas, margs, pasteles, tacos, frec = captura manual semanal
-  // cumples = Birthday tag col I de GuestCenter
-  // comensales = personas que visitaron | ticket = ticket promedio en pesos | primera = % primera visita
-  S19: [
-    { prop: 'Cuerno Calzada', cuentas: 631,  comensales: 1685, ticket: 1282, primera: 57, nuevas: 960,  margs: 0, pasteles: 0, cumples: 0, tacos: 0, frec: 725  },
-    { prop: 'Cuerno Andares', cuentas: 784,  comensales: 2290, ticket: 1232, primera: 54, nuevas: 1237, margs: 0, pasteles: 0, cumples: 0, tacos: 0, frec: 1053 },
-    { prop: 'Cuerno Masaryk', cuentas: 652,  comensales: 2020, ticket: 1648, primera: 67, nuevas: 1353, margs: 0, pasteles: 0, cumples: 0, tacos: 0, frec: 667  },
-    { prop: 'Cuerno NY',      cuentas: 0,    comensales: 0,    ticket: 0,    primera: 0,  nuevas: 0,    margs: 0, pasteles: 0, cumples: 0, tacos: 0, frec: 0    },
-  ],
-  S18: [
-    { prop: 'Cuerno Calzada', cuentas: 537,  comensales: 1243, ticket: 1440, primera: 58, nuevas: 721,  margs: 0, pasteles: 0, cumples: 0, tacos: 0, frec: 522  },
-    { prop: 'Cuerno Andares', cuentas: 675,  comensales: 1978, ticket: 1287, primera: 55, nuevas: 1088, margs: 0, pasteles: 0, cumples: 0, tacos: 0, frec: 890  },
-    { prop: 'Cuerno Masaryk', cuentas: 596,  comensales: 1690, ticket: 1453, primera: 72, nuevas: 1217, margs: 0, pasteles: 0, cumples: 0, tacos: 0, frec: 473  },
-    { prop: 'Cuerno NY',      cuentas: 0,    comensales: 0,    ticket: 0,    primera: 0,  nuevas: 0,    margs: 0, pasteles: 0, cumples: 0, tacos: 0, frec: 0    },
-  ],
-  S17: [
-    { prop: 'Cuerno Calzada', cuentas: 491,  comensales: 1170, ticket: 1479, primera: 49, nuevas: 573,  margs: 0, pasteles: 0, cumples: 0, tacos: 0, frec: 597  },
-    { prop: 'Cuerno Andares', cuentas: 713,  comensales: 2064, ticket: 1222, primera: 53, nuevas: 1094, margs: 0, pasteles: 0, cumples: 0, tacos: 0, frec: 970  },
-    { prop: 'Cuerno Masaryk', cuentas: 592,  comensales: 1716, ticket: 1655, primera: 69, nuevas: 1184, margs: 0, pasteles: 0, cumples: 0, tacos: 0, frec: 532  },
-    { prop: 'Cuerno NY',      cuentas: 0,    comensales: 0,    ticket: 0,    primera: 0,  nuevas: 0,    margs: 0, pasteles: 0, cumples: 0, tacos: 0, frec: 0    },
-  ],
-  S16: [
-    { prop: 'Cuerno Calzada', cuentas: 536,  comensales: 1360, ticket: 1415, primera: 55, nuevas: 748,  margs: 0, pasteles: 0, cumples: 0, tacos: 0, frec: 612  },
-    { prop: 'Cuerno Andares', cuentas: 781,  comensales: 2142, ticket: 1253, primera: 55, nuevas: 1178, margs: 0, pasteles: 0, cumples: 0, tacos: 0, frec: 964  },
-    { prop: 'Cuerno Masaryk', cuentas: 646,  comensales: 1927, ticket: 1647, primera: 74, nuevas: 1426, margs: 0, pasteles: 0, cumples: 0, tacos: 0, frec: 501  },
-    { prop: 'Cuerno NY',      cuentas: 0,    comensales: 0,    ticket: 0,    primera: 0,  nuevas: 0,    margs: 0, pasteles: 0, cumples: 0, tacos: 0, frec: 0    },
-  ],
   S15: [
-    { prop: 'Cuerno Calzada', cuentas: 457,  comensales: 1104, ticket: 1148, primera: 55, nuevas: 260, margs: 175, pasteles: 115, cumples: 65, tacos: 17,  frec: 197 },
-    { prop: 'Cuerno Andares', cuentas: 647,  comensales: 1816, ticket: 1068, primera: 56, nuevas: 356, margs: 94,  pasteles: 97,  cumples: 79, tacos: 28,  frec: 291 },
-    { prop: 'Cuerno Masaryk', cuentas: 501,  comensales: 1446, ticket: 1507, primera: 67, nuevas: 346, margs: 256, pasteles: 180, cumples: 73, tacos: 85,  frec: 155 },
-    { prop: 'Cuerno NY',      cuentas: 1203, comensales: 0,    ticket: 0,    primera: 0,  nuevas: 0,   margs: 361, pasteles: 91,  cumples: 0,  tacos: 224, frec: 0   },
+    { prop: 'Cuerno Calzada', cuentas: 457,  nuevas: 260, margs: 175, pasteles: 115, cumples: 65, tacos: 17,  frec: 197 },
+    { prop: 'Cuerno Andares', cuentas: 647,  nuevas: 356, margs: 94,  pasteles: 97,  cumples: 79, tacos: 28,  frec: 291 },
+    { prop: 'Cuerno Masaryk', cuentas: 501,  nuevas: 346, margs: 256, pasteles: 180, cumples: 73, tacos: 85,  frec: 155 },
+    { prop: 'Cuerno NY',      cuentas: 0,    nuevas: 0,   margs: 0,   pasteles: 0,   cumples: 0,  tacos: 0,   frec: 0   },
   ],
   S14: [
-    { prop: 'Cuerno Calzada', cuentas: 210,  comensales: 1082, ticket: 1352, primera: 59, nuevas: 88,  margs: 72,  pasteles: 5,  cumples: 73, tacos: 58,  frec: 90  },
-    { prop: 'Cuerno Andares', cuentas: 178,  comensales: 1316, ticket: 1226, primera: 51, nuevas: 65,  margs: 60,  pasteles: 4,  cumples: 61, tacos: 40,  frec: 85  },
-    { prop: 'Cuerno Masaryk', cuentas: 195,  comensales: 1198, ticket: 1506, primera: 76, nuevas: 80,  margs: 50,  pasteles: 6,  cumples: 65, tacos: 70,  frec: 75  },
-    { prop: 'Cuerno NY',      cuentas: 160,  comensales: 0,    ticket: 0,    primera: 0,  nuevas: 55,  margs: 30,  pasteles: 3,  cumples: 0,  tacos: 35,  frec: 60  },
+    { prop: 'Cuerno Calzada', cuentas: 210, nuevas: 88, margs: 72, pasteles: 5, cumples: 73, tacos: 58, frec: 90 },
+    { prop: 'Cuerno Andares', cuentas: 178, nuevas: 65, margs: 60, pasteles: 4, cumples: 61, tacos: 40, frec: 85 },
+    { prop: 'Cuerno Masaryk', cuentas: 195, nuevas: 80, margs: 50, pasteles: 6, cumples: 65, tacos: 70, frec: 75 },
+    { prop: 'Cuerno NY',      cuentas: 160, nuevas: 55, margs: 30, pasteles: 3, cumples: 0,  tacos: 35, frec: 60 },
   ],
   S13: [
-    { prop: 'Cuerno Calzada', cuentas: 200,  comensales: 1213, ticket: 1181, primera: 56, nuevas: 82,  margs: 68,  pasteles: 4,  cumples: 66, tacos: 50,  frec: 85  },
-    { prop: 'Cuerno Andares', cuentas: 170,  comensales: 1684, ticket: 1071, primera: 55, nuevas: 60,  margs: 55,  pasteles: 3,  cumples: 67, tacos: 38,  frec: 80  },
-    { prop: 'Cuerno Masaryk', cuentas: 185,  comensales: 1536, ticket: 1383, primera: 69, nuevas: 75,  margs: 48,  pasteles: 5,  cumples: 73, tacos: 65,  frec: 70  },
-    { prop: 'Cuerno NY',      cuentas: 150,  comensales: 0,    ticket: 0,    primera: 0,  nuevas: 50,  margs: 28,  pasteles: 2,  cumples: 0,  tacos: 30,  frec: 55  },
+    { prop: 'Cuerno Calzada', cuentas: 200, nuevas: 82, margs: 68, pasteles: 4, cumples: 66, tacos: 50, frec: 85 },
+    { prop: 'Cuerno Andares', cuentas: 170, nuevas: 60, margs: 55, pasteles: 3, cumples: 67, tacos: 38, frec: 80 },
+    { prop: 'Cuerno Masaryk', cuentas: 185, nuevas: 75, margs: 48, pasteles: 5, cumples: 73, tacos: 65, frec: 70 },
+    { prop: 'Cuerno NY',      cuentas: 150, nuevas: 50, margs: 28, pasteles: 2, cumples: 0,  tacos: 30, frec: 55 },
   ],
   S12: [
-    { prop: 'Cuerno Calzada', cuentas: 190,  comensales: 1285, ticket: 1216, primera: 51, nuevas: 78,  margs: 60,  pasteles: 3,  cumples: 81, tacos: 45,  frec: 80  },
-    { prop: 'Cuerno Andares', cuentas: 165,  comensales: 1983, ticket: 1068, primera: 56, nuevas: 58,  margs: 50,  pasteles: 2,  cumples: 90, tacos: 35,  frec: 75  },
-    { prop: 'Cuerno Masaryk', cuentas: 180,  comensales: 1756, ticket: 1386, primera: 75, nuevas: 70,  margs: 45,  pasteles: 4,  cumples: 92, tacos: 60,  frec: 68  },
-    { prop: 'Cuerno NY',      cuentas: 145,  comensales: 0,    ticket: 0,    primera: 0,  nuevas: 48,  margs: 25,  pasteles: 2,  cumples: 0,  tacos: 28,  frec: 52  },
+    { prop: 'Cuerno Calzada', cuentas: 190, nuevas: 78, margs: 60, pasteles: 3, cumples: 81, tacos: 45, frec: 80 },
+    { prop: 'Cuerno Andares', cuentas: 165, nuevas: 58, margs: 50, pasteles: 2, cumples: 90, tacos: 35, frec: 75 },
+    { prop: 'Cuerno Masaryk', cuentas: 180, nuevas: 70, margs: 45, pasteles: 4, cumples: 92, tacos: 60, frec: 68 },
+    { prop: 'Cuerno NY',      cuentas: 145, nuevas: 48, margs: 25, pasteles: 2, cumples: 0,  tacos: 28, frec: 52 },
   ],
   S11: [
-    { prop: 'Cuerno Calzada', cuentas: 185,  comensales: 1259, ticket: 1247, primera: 59, nuevas: 75,  margs: 58,  pasteles: 3,  cumples: 92, tacos: 42,  frec: 78  },
-    { prop: 'Cuerno Andares', cuentas: 160,  comensales: 1674, ticket: 1162, primera: 55, nuevas: 55,  margs: 46,  pasteles: 2,  cumples: 68, tacos: 33,  frec: 72  },
-    { prop: 'Cuerno Masaryk', cuentas: 175,  comensales: 1538, ticket: 1480, primera: 76, nuevas: 68,  margs: 42,  pasteles: 4,  cumples: 73, tacos: 58,  frec: 65  },
-    { prop: 'Cuerno NY',      cuentas: 140,  comensales: 0,    ticket: 0,    primera: 0,  nuevas: 46,  margs: 22,  pasteles: 1,  cumples: 0,  tacos: 26,  frec: 50  },
+    { prop: 'Cuerno Calzada', cuentas: 185, nuevas: 75, margs: 58, pasteles: 3, cumples: 92, tacos: 42, frec: 78 },
+    { prop: 'Cuerno Andares', cuentas: 160, nuevas: 55, margs: 46, pasteles: 2, cumples: 68, tacos: 33, frec: 72 },
+    { prop: 'Cuerno Masaryk', cuentas: 175, nuevas: 68, margs: 42, pasteles: 4, cumples: 73, tacos: 58, frec: 65 },
+    { prop: 'Cuerno NY',      cuentas: 140, nuevas: 46, margs: 22, pasteles: 1, cumples: 0,  tacos: 26, frec: 50 },
   ],
   S10: [
-    { prop: 'Cuerno Calzada', cuentas: 182,  comensales: 1769, ticket: 1185, primera: 51, nuevas: 74,  margs: 56,  pasteles: 2,  cumples: 84, tacos: 40,  frec: 76  },
-    { prop: 'Cuerno Andares', cuentas: 158,  comensales: 2452, ticket: 1008, primera: 48, nuevas: 54,  margs: 44,  pasteles: 2,  cumples: 78, tacos: 31,  frec: 70  },
-    { prop: 'Cuerno Masaryk', cuentas: 172,  comensales: 2027, ticket: 1530, primera: 75, nuevas: 66,  margs: 40,  pasteles: 3,  cumples: 84, tacos: 55,  frec: 63  },
-    { prop: 'Cuerno NY',      cuentas: 138,  comensales: 0,    ticket: 0,    primera: 0,  nuevas: 44,  margs: 20,  pasteles: 1,  cumples: 0,  tacos: 24,  frec: 48  },
+    { prop: 'Cuerno Calzada', cuentas: 182, nuevas: 74, margs: 56, pasteles: 2, cumples: 84, tacos: 40, frec: 76 },
+    { prop: 'Cuerno Andares', cuentas: 158, nuevas: 54, margs: 44, pasteles: 2, cumples: 78, tacos: 31, frec: 70 },
+    { prop: 'Cuerno Masaryk', cuentas: 172, nuevas: 66, margs: 40, pasteles: 3, cumples: 84, tacos: 55, frec: 63 },
+    { prop: 'Cuerno NY',      cuentas: 138, nuevas: 44, margs: 20, pasteles: 1, cumples: 0,  tacos: 24, frec: 48 },
   ],
   S9: [
-    { prop: 'Cuerno Calzada', cuentas: 178,  comensales: 1002, ticket: 1308, primera: 55, nuevas: 70,  margs: 52,  pasteles: 2,  cumples: 69, tacos: 38,  frec: 74  },
-    { prop: 'Cuerno Andares', cuentas: 155,  comensales: 1038, ticket: 1018, primera: 47, nuevas: 52,  margs: 40,  pasteles: 1,  cumples: 65, tacos: 29,  frec: 68  },
-    { prop: 'Cuerno Masaryk', cuentas: 168,  comensales: 1734, ticket: 1428, primera: 72, nuevas: 62,  margs: 36,  pasteles: 3,  cumples: 87, tacos: 52,  frec: 60  },
-    { prop: 'Cuerno NY',      cuentas: 135,  comensales: 0,    ticket: 0,    primera: 0,  nuevas: 42,  margs: 18,  pasteles: 1,  cumples: 0,  tacos: 22,  frec: 45  },
+    { prop: 'Cuerno Calzada', cuentas: 178, nuevas: 70, margs: 52, pasteles: 2, cumples: 69, tacos: 38, frec: 74 },
+    { prop: 'Cuerno Andares', cuentas: 155, nuevas: 52, margs: 40, pasteles: 1, cumples: 65, tacos: 29, frec: 68 },
+    { prop: 'Cuerno Masaryk', cuentas: 168, nuevas: 62, margs: 36, pasteles: 3, cumples: 87, tacos: 52, frec: 60 },
+    { prop: 'Cuerno NY',      cuentas: 135, nuevas: 42, margs: 18, pasteles: 1, cumples: 0,  tacos: 22, frec: 45 },
   ],
   S8: [
-    { prop: 'Cuerno Calzada', cuentas: 175,  comensales: 1324, ticket: 1205, primera: 56, nuevas: 68,  margs: 50,  pasteles: 2,  cumples: 81, tacos: 36,  frec: 72  },
-    { prop: 'Cuerno Andares', cuentas: 152,  comensales: 1947, ticket: 1090, primera: 54, nuevas: 50,  margs: 38,  pasteles: 1,  cumples: 72, tacos: 27,  frec: 66  },
-    { prop: 'Cuerno Masaryk', cuentas: 165,  comensales: 1676, ticket: 1440, primera: 71, nuevas: 60,  margs: 34,  pasteles: 2,  cumples: 75, tacos: 50,  frec: 58  },
-    { prop: 'Cuerno NY',      cuentas: 132,  comensales: 0,    ticket: 0,    primera: 0,  nuevas: 40,  margs: 16,  pasteles: 1,  cumples: 0,  tacos: 20,  frec: 43  },
+    { prop: 'Cuerno Calzada', cuentas: 175, nuevas: 68, margs: 50, pasteles: 2, cumples: 81, tacos: 36, frec: 72 },
+    { prop: 'Cuerno Andares', cuentas: 152, nuevas: 50, margs: 38, pasteles: 1, cumples: 72, tacos: 27, frec: 66 },
+    { prop: 'Cuerno Masaryk', cuentas: 165, nuevas: 60, margs: 34, pasteles: 2, cumples: 75, tacos: 50, frec: 58 },
+    { prop: 'Cuerno NY',      cuentas: 132, nuevas: 40, margs: 16, pasteles: 1, cumples: 0,  tacos: 20, frec: 43 },
   ],
   S7: [
-    { prop: 'Cuerno Calzada', cuentas: 172,  comensales: 1771, ticket: 1076, primera: 60, nuevas: 66,  margs: 48,  pasteles: 1,  cumples: 76, tacos: 34,  frec: 70  },
-    { prop: 'Cuerno Andares', cuentas: 150,  comensales: 2664, ticket: 1082, primera: 55, nuevas: 48,  margs: 36,  pasteles: 1,  cumples: 70, tacos: 25,  frec: 64  },
-    { prop: 'Cuerno Masaryk', cuentas: 162,  comensales: 2289, ticket: 1389, primera: 76, nuevas: 58,  margs: 32,  pasteles: 2,  cumples: 70, tacos: 48,  frec: 56  },
-    { prop: 'Cuerno NY',      cuentas: 130,  comensales: 0,    ticket: 0,    primera: 0,  nuevas: 38,  margs: 14,  pasteles: 1,  cumples: 0,  tacos: 18,  frec: 41  },
+    { prop: 'Cuerno Calzada', cuentas: 172, nuevas: 66, margs: 48, pasteles: 1, cumples: 76, tacos: 34, frec: 70 },
+    { prop: 'Cuerno Andares', cuentas: 150, nuevas: 48, margs: 36, pasteles: 1, cumples: 70, tacos: 25, frec: 64 },
+    { prop: 'Cuerno Masaryk', cuentas: 162, nuevas: 58, margs: 32, pasteles: 2, cumples: 70, tacos: 48, frec: 56 },
+    { prop: 'Cuerno NY',      cuentas: 130, nuevas: 38, margs: 14, pasteles: 1, cumples: 0,  tacos: 18, frec: 41 },
   ],
   S6: [
-    { prop: 'Cuerno Calzada', cuentas: 168,  comensales: 1749, ticket: 956,  primera: 56, nuevas: 64,  margs: 45,  pasteles: 1,  cumples: 92, tacos: 32,  frec: 68  },
-    { prop: 'Cuerno Andares', cuentas: 148,  comensales: 2586, ticket: 1012, primera: 59, nuevas: 46,  margs: 34,  pasteles: 1,  cumples: 81, tacos: 23,  frec: 62  },
-    { prop: 'Cuerno Masaryk', cuentas: 158,  comensales: 1819, ticket: 1290, primera: 72, nuevas: 55,  margs: 30,  pasteles: 2,  cumples: 66, tacos: 45,  frec: 54  },
-    { prop: 'Cuerno NY',      cuentas: 128,  comensales: 0,    ticket: 0,    primera: 0,  nuevas: 36,  margs: 12,  pasteles: 0,  cumples: 0,  tacos: 16,  frec: 39  },
+    { prop: 'Cuerno Calzada', cuentas: 168, nuevas: 64, margs: 45, pasteles: 1, cumples: 92, tacos: 32, frec: 68 },
+    { prop: 'Cuerno Andares', cuentas: 148, nuevas: 46, margs: 34, pasteles: 1, cumples: 81, tacos: 23, frec: 62 },
+    { prop: 'Cuerno Masaryk', cuentas: 158, nuevas: 55, margs: 30, pasteles: 2, cumples: 66, tacos: 45, frec: 54 },
+    { prop: 'Cuerno NY',      cuentas: 128, nuevas: 36, margs: 12, pasteles: 0, cumples: 0,  tacos: 16, frec: 39 },
   ],
 };
 
 // Datos mensuales acumulados
 
-// Reviews reales — fuente: Verbalizaciones_y_Calificaciones (actualizado sem 6-19)
+// Reviews reales — fuente: Verbalizaciones_y_Calificaciones CSV
 const REVIEWS_HISTORICO = {
-  6:  { 'Cuerno Calzada': {google:4.9,opentable:4.7,valor_ot:null,tripadvisor:4.9,facebook:68},  'Cuerno Andares': {google:4.9,opentable:4.7,valor_ot:null,tripadvisor:4.9,facebook:100}, 'Cuerno Masaryk': {google:4.8,opentable:4.8,valor_ot:null,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.9,opentable:null,valor_ot:null,tripadvisor:4.0,facebook:null} },
-  7:  { 'Cuerno Calzada': {google:4.9,opentable:4.7,valor_ot:null,tripadvisor:4.9,facebook:68},  'Cuerno Andares': {google:4.9,opentable:4.7,valor_ot:null,tripadvisor:4.9,facebook:100}, 'Cuerno Masaryk': {google:4.8,opentable:4.9,valor_ot:null,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.9,opentable:null,valor_ot:null,tripadvisor:4.0,facebook:null} },
-  8:  { 'Cuerno Calzada': {google:4.9,opentable:4.7,valor_ot:null,tripadvisor:4.9,facebook:68},  'Cuerno Andares': {google:4.9,opentable:4.8,valor_ot:null,tripadvisor:4.9,facebook:100}, 'Cuerno Masaryk': {google:4.8,opentable:4.8,valor_ot:null,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.9,opentable:null,valor_ot:null,tripadvisor:4.0,facebook:null} },
-  9:  { 'Cuerno Calzada': {google:4.9,opentable:4.7,valor_ot:null,tripadvisor:4.9,facebook:68},  'Cuerno Andares': {google:4.9,opentable:4.7,valor_ot:null,tripadvisor:4.9,facebook:100}, 'Cuerno Masaryk': {google:4.8,opentable:4.5,valor_ot:null,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.9,opentable:null,valor_ot:null,tripadvisor:4.0,facebook:null} },
-  10: { 'Cuerno Calzada': {google:4.9,opentable:4.7,valor_ot:null,tripadvisor:4.9,facebook:68},  'Cuerno Andares': {google:4.9,opentable:4.7,valor_ot:null,tripadvisor:4.9,facebook:100}, 'Cuerno Masaryk': {google:4.8,opentable:5.0,valor_ot:null,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.9,opentable:null,valor_ot:null,tripadvisor:4.2,facebook:null} },
-  11: { 'Cuerno Calzada': {google:4.9,opentable:4.7,valor_ot:null,tripadvisor:4.9,facebook:68},  'Cuerno Andares': {google:4.9,opentable:4.7,valor_ot:null,tripadvisor:4.9,facebook:100}, 'Cuerno Masaryk': {google:4.8,opentable:4.9,valor_ot:null,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.9,opentable:null,valor_ot:null,tripadvisor:4.2,facebook:null} },
-  12: { 'Cuerno Calzada': {google:4.9,opentable:4.7,valor_ot:null,tripadvisor:4.9,facebook:68},  'Cuerno Andares': {google:4.9,opentable:4.7,valor_ot:null,tripadvisor:4.9,facebook:100}, 'Cuerno Masaryk': {google:4.8,opentable:4.7,valor_ot:null,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.9,opentable:null,valor_ot:null,tripadvisor:4.2,facebook:null} },
-  13: { 'Cuerno Calzada': {google:4.9,opentable:4.7,valor_ot:null,tripadvisor:4.9,facebook:68},  'Cuerno Andares': {google:4.9,opentable:4.8,valor_ot:null,tripadvisor:4.9,facebook:100}, 'Cuerno Masaryk': {google:4.8,opentable:4.8,valor_ot:null,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.8,opentable:null,valor_ot:null,tripadvisor:4.2,facebook:null} },
-  14: { 'Cuerno Calzada': {google:4.9,opentable:4.8,valor_ot:null,tripadvisor:4.9,facebook:68},  'Cuerno Andares': {google:4.9,opentable:4.6,valor_ot:null,tripadvisor:4.9,facebook:100}, 'Cuerno Masaryk': {google:4.8,opentable:2.7,valor_ot:null,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.8,opentable:null,valor_ot:null,tripadvisor:4.2,facebook:null} },
-  15: { 'Cuerno Calzada': {google:4.9,opentable:4.7,valor_ot:null,tripadvisor:4.9,facebook:68},  'Cuerno Andares': {google:4.9,opentable:4.8,valor_ot:null,tripadvisor:4.9,facebook:100}, 'Cuerno Masaryk': {google:4.8,opentable:4.7,valor_ot:null,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.8,opentable:4.7,valor_ot:null,tripadvisor:4.2,facebook:null} },
-  16: { 'Cuerno Calzada': {google:4.9,opentable:4.7,valor_ot:null,tripadvisor:4.9,facebook:68},  'Cuerno Andares': {google:4.9,opentable:4.7,valor_ot:null,tripadvisor:4.9,facebook:100}, 'Cuerno Masaryk': {google:4.8,opentable:4.7,valor_ot:null,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.8,opentable:4.7,valor_ot:null,tripadvisor:4.2,facebook:null} },
-  17: { 'Cuerno Calzada': {google:4.9,opentable:4.7,valor_ot:null,tripadvisor:4.9,facebook:68},  'Cuerno Andares': {google:4.9,opentable:4.7,valor_ot:null,tripadvisor:4.9,facebook:100}, 'Cuerno Masaryk': {google:4.8,opentable:4.7,valor_ot:null,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.8,opentable:4.7,valor_ot:null,tripadvisor:4.2,facebook:null} },
-  18: { 'Cuerno Calzada': {google:4.9,opentable:4.7,valor_ot:null,tripadvisor:4.9,facebook:68},  'Cuerno Andares': {google:4.9,opentable:4.8,valor_ot:null,tripadvisor:4.9,facebook:100}, 'Cuerno Masaryk': {google:4.8,opentable:4.7,valor_ot:null,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.8,opentable:4.7,valor_ot:null,tripadvisor:4.2,facebook:null} },
-  19: { 'Cuerno Calzada': {google:4.9,opentable:4.7,valor_ot:4.6,tripadvisor:4.9,facebook:68},   'Cuerno Andares': {google:4.9,opentable:4.8,valor_ot:4.6,tripadvisor:4.9,facebook:100}, 'Cuerno Masaryk': {google:4.8,opentable:4.7,valor_ot:4.5,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.8,opentable:4.7,valor_ot:null,tripadvisor:4.3,facebook:null} },
+  6:  { 'Cuerno Andares': {google:4.9,opentable:4.7,tripadvisor:4.9,facebook:100}, 'Cuerno Calzada': {google:4.9,opentable:4.7,tripadvisor:4.9,facebook:68},  'Cuerno Masaryk': {google:4.8,opentable:4.8,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.9,opentable:null,tripadvisor:4.0,facebook:null} },
+  7:  { 'Cuerno Andares': {google:4.9,opentable:4.7,tripadvisor:4.9,facebook:100}, 'Cuerno Calzada': {google:4.9,opentable:4.7,tripadvisor:4.9,facebook:68},  'Cuerno Masaryk': {google:4.8,opentable:4.9,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.9,opentable:null,tripadvisor:4.0,facebook:null} },
+  8:  { 'Cuerno Andares': {google:4.9,opentable:4.8,tripadvisor:4.9,facebook:100}, 'Cuerno Calzada': {google:4.9,opentable:4.7,tripadvisor:4.9,facebook:68},  'Cuerno Masaryk': {google:4.8,opentable:4.8,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.9,opentable:null,tripadvisor:4.0,facebook:null} },
+  9:  { 'Cuerno Andares': {google:4.9,opentable:4.7,tripadvisor:4.9,facebook:100}, 'Cuerno Calzada': {google:4.9,opentable:4.7,tripadvisor:4.9,facebook:68},  'Cuerno Masaryk': {google:4.8,opentable:4.5,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.9,opentable:null,tripadvisor:4.0,facebook:null} },
+  10: { 'Cuerno Andares': {google:4.9,opentable:4.7,tripadvisor:4.9,facebook:100}, 'Cuerno Calzada': {google:4.9,opentable:4.7,tripadvisor:4.9,facebook:68},  'Cuerno Masaryk': {google:4.8,opentable:5.0,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.9,opentable:null,tripadvisor:4.2,facebook:null} },
+  11: { 'Cuerno Andares': {google:4.9,opentable:4.7,tripadvisor:4.9,facebook:100}, 'Cuerno Calzada': {google:4.9,opentable:4.7,tripadvisor:4.9,facebook:68},  'Cuerno Masaryk': {google:4.8,opentable:4.9,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.9,opentable:null,tripadvisor:4.2,facebook:null} },
+  12: { 'Cuerno Andares': {google:4.9,opentable:4.7,tripadvisor:4.9,facebook:100}, 'Cuerno Calzada': {google:4.9,opentable:4.7,tripadvisor:4.9,facebook:68},  'Cuerno Masaryk': {google:4.8,opentable:4.7,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.9,opentable:null,tripadvisor:4.2,facebook:null} },
+  13: { 'Cuerno Andares': {google:4.9,opentable:4.8,tripadvisor:4.9,facebook:100}, 'Cuerno Calzada': {google:4.9,opentable:4.7,tripadvisor:4.9,facebook:68},  'Cuerno Masaryk': {google:4.8,opentable:4.8,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.8,opentable:null,tripadvisor:4.2,facebook:null} },
+  14: { 'Cuerno Andares': {google:4.9,opentable:4.6,tripadvisor:4.9,facebook:100}, 'Cuerno Calzada': {google:4.9,opentable:4.8,tripadvisor:4.9,facebook:68},  'Cuerno Masaryk': {google:4.8,opentable:2.7,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.8,opentable:null,tripadvisor:4.2,facebook:null} },
+  15: { 'Cuerno Andares': {google:4.9,opentable:4.8,tripadvisor:4.9,facebook:100}, 'Cuerno Calzada': {google:4.9,opentable:4.7,tripadvisor:4.9,facebook:68},  'Cuerno Masaryk': {google:4.8,opentable:4.7,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.8,opentable:4.7,tripadvisor:4.2,facebook:null} },
 };
 
 function getReviewsForWeek(semKey) {
@@ -819,7 +773,6 @@ function getReviewsForWeek(semKey) {
       prop: p,
       google:      weekData[p]?.google      ?? null,
       opentable:   weekData[p]?.opentable   ?? null,
-      valor_ot:    weekData[p]?.valor_ot    ?? null,
       tripadvisor: weekData[p]?.tripadvisor ?? null,
       facebook:    weekData[p]?.facebook    ?? null,
     }))
@@ -827,6 +780,7 @@ function getReviewsForWeek(semKey) {
 }
 
 function getReviewsMensual() {
+  // Average across all weeks for each property
   return {
     unidades: PROPIEDADES.map(p => {
       const weeks = Object.values(REVIEWS_HISTORICO);
@@ -834,38 +788,21 @@ function getReviewsMensual() {
         const vals = weeks.map(w => w[p]?.[key]).filter(v => v !== null && v !== undefined);
         return vals.length ? Math.round((vals.reduce((a,b)=>a+b,0)/vals.length)*10)/10 : null;
       };
-      return { prop: p, google: avg('google'), opentable: avg('opentable'), valor_ot: avg('valor_ot'), tripadvisor: avg('tripadvisor'), facebook: avg('facebook') };
+      return { prop: p, google: avg('google'), opentable: avg('opentable'), tripadvisor: avg('tripadvisor'), facebook: avg('facebook') };
     })
   };
 }
 
 // Semanas por mes (2026)
 const MESES = {
-  mayo:    { label: 'Mayo 2026',          semanas: ['S16','S17','S18','S19','S20','S21'] },
-  abril:   { label: 'Abril 2026',         semanas: ['S14','S15'] },
-  marzo:   { label: 'Marzo 2026',         semanas: ['S10','S11','S12','S13'] },
-  febrero: { label: 'Febrero 2026',       semanas: ['S5','S6','S7','S8','S9'] },
-  enero:   { label: 'Enero 2026',         semanas: ['S1','S2','S3','S4'] },
-  todo:    { label: 'Enero — Mayo 2026',  semanas: ['S6','S7','S8','S9','S10','S11','S12','S13','S14','S15','S16','S17','S18','S19'] },
+  enero:   { label: 'Enero 2026',            semanas: ['S1','S2','S3','S4'] },
+  febrero: { label: 'Febrero 2026',           semanas: ['S5','S6','S7','S8','S9'] },
+  marzo:   { label: 'Marzo 2026',             semanas: ['S10','S11','S12','S13'] },
+  abril:   { label: 'Abril 2026',             semanas: ['S14','S15'] },
+  todo:    { label: 'Enero — Abril 2026',     semanas: ['S6','S7','S8','S9','S10','S11','S12','S13','S14','S15'] },
 };
 
-let currentMes = 'mayo';
-  enero:   { 'Cuerno Calzada': 94, 'Cuerno Andares': 99, 'Cuerno Masaryk': 98, 'Cuerno NY': 89 },
-  febrero: { 'Cuerno Calzada': 95, 'Cuerno Andares': 98, 'Cuerno Masaryk': 96, 'Cuerno NY': 88 },
-  marzo:   { 'Cuerno Calzada': 88, 'Cuerno Andares': 93, 'Cuerno Masaryk': 83, 'Cuerno NY': 93 },
-  abril:   { 'Cuerno Calzada': 95, 'Cuerno Andares': 97, 'Cuerno Masaryk': 95, 'Cuerno NY': 96 },
-};
-
-// Semanas por mes (2026)
-const MESES = {
-  enero:   { label: 'Enero 2026',        semanas: ['S1','S2','S3','S4'] },
-  febrero: { label: 'Febrero 2026',      semanas: ['S5','S6','S7','S8','S9'] },
-  marzo:   { label: 'Marzo 2026',        semanas: ['S10','S11','S12','S13'] },
-  abril:   { label: 'Abril 2026',        semanas: ['S14','S15'] },
-  todo:    { label: 'Enero — Abril 2026',semanas: ['S6','S7','S8','S9','S10','S11','S12','S13','S14','S15'] },
-};
-
-
+let currentMes = 'abril';
 
 function selectMonth(mes, btn) {
   currentMes = mes;
@@ -874,8 +811,6 @@ function selectMonth(mes, btn) {
   renderMensual();
   setTimeout(renderTrendChart, 50);
 }
-
-const SEMANAS_ORDEN = [6,7,8,9,10,11,12,13,14,15,16,17,18,19];
 
 const PROP_COLORS = {
   'Cuerno Calzada': '#9F9782',
@@ -888,7 +823,7 @@ const PROP_COLORS = {
 // UTILS
 // =====================
 
-let currentWeek = 'S19';
+let currentWeek = 'S15';
 
 function pct(a, b) { return b > 0 ? a / b : 0; }
 function fmt(n)    { return Math.round(n * 100) + '%'; }
@@ -910,16 +845,13 @@ function stars(rating) {
 // =====================
 
 function renderKPIs(data, containerId) {
-  const totalCuentas   = data.reduce((s, d) => s + (d.cuentas    || 0), 0);
-  const totalNuevas    = data.reduce((s, d) => s + (d.nuevas     || 0), 0);
-  const totalMargs     = data.reduce((s, d) => s + (d.margs      || 0), 0);
-  const totalPasteles  = data.reduce((s, d) => s + (d.pasteles   || 0), 0);
-  const totalCumples   = data.reduce((s, d) => s + (d.cumples    || 0), 0);
-  const totalTacos     = data.reduce((s, d) => s + (d.tacos      || 0), 0);
-  const totalFrec      = data.reduce((s, d) => s + (d.frec       || 0), 0);
-  const totalCom       = data.reduce((s, d) => s + (d.comensales || 0), 0);
-  const totalTicketRev = data.reduce((s, d) => s + ((d.ticket || 0) * (d.comensales || 0)), 0);
-  const avgTicket      = totalCom > 0 ? Math.round(totalTicketRev / totalCom) : 0;
+  const totalCuentas  = data.reduce((s, d) => s + d.cuentas, 0);
+  const totalNuevas   = data.reduce((s, d) => s + d.nuevas, 0);
+  const totalMargs    = data.reduce((s, d) => s + d.margs, 0);
+  const totalPasteles = data.reduce((s, d) => s + d.pasteles, 0);
+  const totalCumples  = data.reduce((s, d) => s + d.cumples, 0);
+  const totalTacos    = data.reduce((s, d) => s + d.tacos, 0);
+  const totalFrec     = data.reduce((s, d) => s + d.frec, 0);
 
   const pMargs    = pct(totalMargs, totalNuevas);
   const pPasteles = pct(totalPasteles, totalCumples);
@@ -931,8 +863,6 @@ function renderKPIs(data, containerId) {
     { label: 'Pasteles entregados',    value: fmt(pPasteles), meta: META_PASTELES,   fill: pPasteles, raw: `${totalPasteles} de ${totalCumples} cumpleaños` },
     { label: 'Tacos taqueros',         value: fmt(pTacos),    meta: META_TACOS,      fill: pTacos,    raw: `${totalTacos} de ${totalCuentas} cuentas` },
     { label: 'Clientes frecuentes',    value: fmt(pFrec),     meta: META_FRECUENTES, fill: pFrec,     raw: `${totalFrec} de ${totalCuentas} cuentas` },
-    { label: 'Comensales',             value: totalCom > 0 ? totalCom.toLocaleString('es-MX') : '—', meta: null, fill: null, raw: 'personas que visitaron' },
-    { label: 'Ticket promedio',        value: avgTicket > 0 ? `$${avgTicket.toLocaleString('es-MX')}` : '—', meta: null, fill: null, raw: 'promedio ponderado' },
     { label: 'Total cuentas',          value: totalCuentas,   meta: null,            fill: null,      raw: 'todas las unidades' },
     { label: 'Visitas nuevas',         value: totalNuevas,    meta: null,            fill: null,      raw: `${fmt(pct(totalNuevas, totalCuentas))} del total` },
   ];
@@ -960,12 +890,12 @@ function renderReviews(reviewsData, containerId) {
   const el = document.getElementById(containerId);
   const props = reviewsData.unidades || [];
 
+  // Consolidated avg cards (4 platforms)
   const platforms = [
-    { key: 'google',      name: 'Google',           max: 5  },
-    { key: 'opentable',   name: 'OpenTable',         max: 5  },
-    { key: 'valor_ot',    name: 'Value (OT)',        max: 5  },
-    { key: 'tripadvisor', name: 'TripAdvisor',       max: 5  },
-    { key: 'facebook',    name: 'Facebook',          max: 100, isFb: true },
+    { key: 'google',      name: 'Google',      max: 5  },
+    { key: 'opentable',   name: 'OpenTable',   max: 5  },
+    { key: 'tripadvisor', name: 'TripAdvisor', max: 5  },
+    { key: 'facebook',    name: 'Facebook',    max: 100, isFb: true },
   ];
 
   const avgCards = platforms.map(p => {
@@ -981,25 +911,24 @@ function renderReviews(reviewsData, containerId) {
       </div>`;
   }).join('');
 
+  // Per-property table
   const tableRows = props.map(r => `
     <tr>
       <td class="prop-name">${r.prop}</td>
       <td style="text-align:center;font-size:13px;color:var(--taupe-dark)">${r.google ?? '—'}</td>
       <td style="text-align:center;font-size:13px;color:var(--taupe-dark)">${r.opentable ?? '—'}</td>
-      <td style="text-align:center;font-size:13px;color:var(--taupe-dark)">${r.valor_ot ?? '—'}</td>
       <td style="text-align:center;font-size:13px;color:var(--taupe-dark)">${r.tripadvisor ?? '—'}</td>
       <td style="text-align:center;font-size:13px;color:var(--taupe-dark)">${r.facebook !== null && r.facebook !== undefined ? r.facebook + '%' : '—'}</td>
     </tr>`).join('');
 
   el.innerHTML = `
     <div style="grid-column:1/-1">
-      <div class="reviews-grid" style="grid-template-columns:repeat(5,1fr);margin-bottom:16px">${avgCards}</div>
+      <div class="reviews-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:16px">${avgCards}</div>
       <table class="prop-table">
         <thead><tr>
           <th>Unidad</th>
           <th style="text-align:center">Google</th>
           <th style="text-align:center">OpenTable</th>
-          <th style="text-align:center">Value (OT)</th>
           <th style="text-align:center">TripAdvisor</th>
           <th style="text-align:center">Facebook</th>
         </tr></thead>
@@ -1029,16 +958,9 @@ function renderTable(data, tbodyId) {
       </div></td>`;
     }
 
-    const com  = d.comensales > 0 ? d.comensales.toLocaleString('es-MX') : '—';
-    const tix  = d.ticket > 0 ? `$${d.ticket.toLocaleString('es-MX')}` : '—';
-    const pv   = d.primera > 0 ? d.primera + '%' : '—';
-
     return `
       <tr>
         <td class="prop-name">${d.prop}</td>
-        <td style="text-align:center;font-size:13px;color:var(--taupe-dark)">${com}</td>
-        <td style="text-align:center;font-size:13px;color:var(--taupe-dark)">${tix}</td>
-        <td style="text-align:center;font-size:13px;color:var(--taupe-dark)">${pv}</td>
         <td>${d.cuentas}</td>
         <td>${d.nuevas}</td>
         ${cell(pM, META_MARGARITAS)}
@@ -1179,87 +1101,24 @@ function renderSemanal() {
   renderRanking(data, 'ranking-semanal');
 }
 
-function renderMystery(mes) {
-  const el = document.getElementById('mystery-shopper-section');
-  if (!el) return;
-
-  // Get months to show
-  const meses = mes === 'todo'
-    ? ['enero','febrero','marzo','abril']
-    : [mes];
-
-  // Table headers
-  const mesLabels = { enero:'Enero', febrero:'Febrero', marzo:'Marzo', abril:'Abril' };
-  const thMeses = meses.map(m => `<th style="text-align:center">${mesLabels[m] || m}</th>`).join('');
-
-  // Color class for mystery score
-  function msColor(val) {
-    if (val === null) return 'color:var(--taupe-light)';
-    if (val >= 90) return 'color:var(--green)';
-    if (val >= 80) return 'color:var(--yellow)';
-    return 'color:var(--red)';
-  }
-
-  const rows = PROPIEDADES.map(p => {
-    const cells = meses.map(m => {
-      const val = MYSTERY_SHOPPER[m]?.[p] ?? null;
-      const style = msColor(val);
-      return `<td style="text-align:center;font-size:15px;font-weight:400;${style}">${val !== null ? val + '%' : '—'}</td>`;
-    }).join('');
-    return `<tr><td class="prop-name">${p}</td>${cells}</tr>`;
-  }).join('');
-
-  // Averages row
-  const avgCells = meses.map(m => {
-    const vals = PROPIEDADES.map(p => MYSTERY_SHOPPER[m]?.[p]).filter(v => v !== null && v !== undefined);
-    const avg = vals.length ? Math.round(vals.reduce((a,b)=>a+b,0)/vals.length) : null;
-    const style = msColor(avg);
-    return `<td style="text-align:center;font-size:13px;font-weight:500;${style}">${avg !== null ? avg + '%' : '—'}</td>`;
-  }).join('');
-
-  el.innerHTML = `
-    <table class="prop-table">
-      <thead><tr>
-        <th>Unidad</th>
-        ${thMeses}
-      </tr></thead>
-      <tbody>${rows}</tbody>
-      <tfoot><tr>
-        <td style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--taupe-light);padding:14px 20px 14px 0">Promedio</td>
-        ${avgCells}
-      </tr></tfoot>
-    </table>
-    <div style="margin-top:10px;font-size:10px;color:var(--taupe-light);letter-spacing:0.08em">
-      🟢 ≥ 90%  &nbsp; 🟡 80–89%  &nbsp; 🔴 &lt; 80%
-    </div>`;
-}
-
 function renderMensual() {
   const mes = MESES[currentMes];
   const semanasDelMes = mes.semanas.filter(s => DATA_SEMANAL[s]);
 
+  // Aggregate only weeks in the selected month
   const mensualData = PROPIEDADES.map((p, i) => {
-    let total = { prop: p, cuentas: 0, comensales: 0, ticketRev: 0, ticket: 0, primera: 0, nuevas: 0, margs: 0, pasteles: 0, cumples: 0, tacos: 0, frec: 0 };
+    let total = { prop: p, cuentas: 0, nuevas: 0, margs: 0, pasteles: 0, cumples: 0, tacos: 0, frec: 0 };
     semanasDelMes.forEach(sem => {
       const d = DATA_SEMANAL[sem][i];
-      if (d) {
-        total.cuentas    += d.cuentas    || 0;
-        total.comensales += d.comensales || 0;
-        total.ticketRev  += (d.ticket || 0) * (d.comensales || 0);
-        total.nuevas     += d.nuevas     || 0;
-        total.margs      += d.margs      || 0;
-        total.pasteles   += d.pasteles   || 0;
-        total.cumples    += d.cumples    || 0;
-        total.tacos      += d.tacos      || 0;
-        total.frec       += d.frec       || 0;
-      }
+      if (d) { total.cuentas+=d.cuentas; total.nuevas+=d.nuevas; total.margs+=d.margs; total.pasteles+=d.pasteles; total.cumples+=d.cumples; total.tacos+=d.tacos; total.frec+=d.frec; }
     });
-    total.ticket  = total.comensales > 0 ? Math.round(total.ticketRev / total.comensales) : 0;
     return total;
   });
 
+  // Update subtitle
   document.getElementById('mensual-sub').textContent = mes.label + ' · Sems ' + semanasDelMes.map(s=>s.replace('S','')).join(', ');
 
+  // Reviews: average of the month's weeks
   const semNums = semanasDelMes.map(s => parseInt(s.replace('S','')));
   const reviewsMes = {
     unidades: PROPIEDADES.map(p => {
@@ -1267,7 +1126,7 @@ function renderMensual() {
         const vals = semNums.map(n => REVIEWS_HISTORICO[n]?.[p]?.[key]).filter(v => v !== null && v !== undefined);
         return vals.length ? Math.round((vals.reduce((a,b)=>a+b,0)/vals.length)*10)/10 : null;
       };
-      return { prop: p, google: avg('google'), opentable: avg('opentable'), valor_ot: avg('valor_ot'), tripadvisor: avg('tripadvisor'), facebook: avg('facebook') };
+      return { prop: p, google: avg('google'), opentable: avg('opentable'), tripadvisor: avg('tripadvisor'), facebook: avg('facebook') };
     })
   };
 
@@ -1275,7 +1134,6 @@ function renderMensual() {
   renderReviews(reviewsMes, 'reviews-mensual');
   renderTable(mensualData, 'prop-tbody-mensual');
   renderRanking(mensualData, 'ranking-mensual');
-  renderMystery(currentMes);
 }
 
 // Date
