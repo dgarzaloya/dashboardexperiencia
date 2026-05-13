@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>iam HOSPITALITY — Experience Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #EDECD6;
+    --taupe: #9F9782;
+    --taupe-light: #c4c2ac;
+    --taupe-dark: #6b6a58;
+    --white: #fafaf4;
+    --red: #c17a6a;
+    --yellow: #c4a96a;
+    --green: #7a9a78;
+    --border: rgba(159,151,130,0.2);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    color: var(--taupe-dark);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .header {
+    padding: 32px 48px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    background: var(--cream);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+  }
+
+  .logo-iam {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 22px;
+    color: var(--taupe);
+    letter-spacing: 0.02em;
+  }
+
+  .logo-hospitality {
+    font-family: 'Jost', sans-serif;
+    font-weight: 400;
+    font-size: 10px;
+    color: var(--taupe);
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    margin-top: 1px;
+  }
+
+  .header-meta {
+    text-align: right;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--taupe-light);
+  }
+
+  .header-meta span {
+    display: block;
+  }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    padding: 0 48px;
+    border-bottom: 1px solid var(--border);
+    gap: 0;
+  }
+
+  .tab {
+    padding: 16px 32px;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--taupe-light);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.2s ease;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+  }
+
+  .tab:hover { color: var(--taupe); }
+
+  .tab.active {
+    color: var(--taupe-dark);
+    border-bottom: 2px solid var(--taupe);
+    font-weight: 400;
+  }
+
+  /* CONTENT */
+  .content {
+    padding: 40px 48px 80px;
+  }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* SECTION TITLE */
+  .section-header {
+    margin-bottom: 32px;
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 28px;
+    color: var(--taupe);
+    letter-spacing: 0.04em;
+  }
+
+  .section-sub {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--taupe-light);
+  }
+
+  /* PERIOD SELECTOR */
+  .period-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 36px;
+    flex-wrap: wrap;
+  }
+
+  .period-btn {
+    padding: 7px 18px;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--taupe-light);
+    background: none;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    font-family: 'Jost', sans-serif;
+    transition: all 0.2s;
+  }
+
+  .period-btn:hover, .period-btn.active {
+    background: var(--taupe);
+    color: var(--cream);
+    border-color: var(--taupe);
+  }
+
+  /* PROPERTY FILTER */
+  .property-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+  }
+
+  .prop-btn {
+    padding: 6px 16px;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--taupe);
+    background: none;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    font-family: 'Jost', sans-serif;
+    transition: all 0.2s;
+    border-radius: 0;
+  }
+
+  .prop-btn:hover { border-color: var(--taupe); }
+  .prop-btn.active {
+    background: var(--taupe);
+    color: var(--cream);
+    border-color: var(--taupe);
+  }
+
+  /* KPI GRID */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    margin-bottom: 40px;
+  }
+
+  .kpi-card {
+    background: var(--cream);
+    padding: 28px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .kpi-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--taupe-light);
+  }
+
+  .kpi-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px;
+    font-weight: 300;
+    color: var(--taupe-dark);
+    line-height: 1;
+  }
+
+  .kpi-value.good { color: var(--green); }
+  .kpi-value.warn { color: var(--yellow); }
+  .kpi-value.bad { color: var(--red); }
+
+  .kpi-meta {
+    font-size: 11px;
+    color: var(--taupe-light);
+    letter-spacing: 0.06em;
+  }
+
+  .kpi-bar {
+    margin-top: 4px;
+    height: 2px;
+    background: var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .kpi-bar-fill {
+    height: 100%;
+    transition: width 1s ease;
+  }
+
+  .kpi-bar-fill.good { background: var(--green); }
+  .kpi-bar-fill.warn { background: var(--yellow); }
+  .kpi-bar-fill.bad { background: var(--red); }
+
+  /* PROPERTY TABLE */
+  .table-wrapper {
+    overflow-x: auto;
+    margin-bottom: 40px;
+  }
+
+  .prop-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+
+  .prop-table th {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--taupe-light);
+    font-weight: 400;
+    padding: 0 20px 12px 0;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+
+  .prop-table td {
+    padding: 16px 20px 16px 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--taupe-dark);
+    vertical-align: middle;
+  }
+
+  .prop-table tr:last-child td { border-bottom: none; }
+
+  .prop-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--taupe);
+    letter-spacing: 0.04em;
+  }
+
+  .pct-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .mini-bar {
+    width: 60px;
+    height: 2px;
+    background: var(--border);
+    flex-shrink: 0;
+  }
+
+  .mini-bar-fill {
+    height: 100%;
+  }
+
+  .mini-bar-fill.good { background: var(--green); }
+  .mini-bar-fill.warn { background: var(--yellow); }
+  .mini-bar-fill.bad { background: var(--red); }
+
+  .pct-num {
+    font-size: 13px;
+    font-weight: 400;
+    min-width: 36px;
+  }
+
+  .pct-num.good { color: var(--green); }
+  .pct-num.warn { color: var(--yellow); }
+  .pct-num.bad { color: var(--red); }
+
+  .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  .dot.good { background: var(--green); }
+  .dot.warn { background: var(--yellow); }
+  .dot.bad { background: var(--red); }
+
+  /* REVIEWS SECTION */
+  .reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    margin-bottom: 40px;
+  }
+
+  .review-card {
+    background: var(--cream);
+    padding: 24px 28px;
+  }
+
+  .review-platform {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--taupe-light);
+    margin-bottom: 12px;
+  }
+
+  .review-rating {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px;
+    font-weight: 300;
+    color: var(--taupe-dark);
+    line-height: 1;
+  }
+
+  .review-count {
+    font-size: 11px;
+    color: var(--taupe-light);
+    margin-top: 4px;
+    letter-spacing: 0.08em;
+  }
+
+  .stars {
+    display: flex;
+    gap: 2px;
+    margin-top: 8px;
+  }
+
+  .star {
+    width: 8px;
+    height: 8px;
+    background: var(--taupe-light);
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  }
+
+  .star.filled { background: var(--taupe); }
+
+  /* TREND CHART */
+  .chart-section {
+    margin-bottom: 40px;
+  }
+
+  .chart-title {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--taupe-light);
+    margin-bottom: 20px;
+  }
+
+  .chart-container {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    padding: 24px;
+  }
+
+  .chart-svg { width: 100%; overflow: visible; }
+
+  /* RANKING */
+  .ranking-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid var(--border);
+  }
+
+  .ranking-item {
+    display: flex;
+    align-items: center;
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--border);
+    gap: 16px;
+    transition: background 0.15s;
+  }
+
+  .ranking-item:last-child { border-bottom: none; }
+  .ranking-item:hover { background: rgba(159,151,130,0.05); }
+
+  .rank-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 300;
+    color: var(--taupe-light);
+    width: 32px;
+    flex-shrink: 0;
+  }
+
+  .rank-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--taupe);
+    flex: 1;
+    letter-spacing: 0.04em;
+  }
+
+  .rank-score {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--taupe-dark);
+  }
+
+  .rank-bar {
+    width: 120px;
+    height: 2px;
+    background: var(--border);
+    flex-shrink: 0;
+  }
+
+  .rank-bar-fill {
+    height: 100%;
+    background: var(--taupe);
+    transition: width 1s ease;
+  }
+
+  /* FOOTER */
+  .footer {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    padding: 16px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    pointer-events: none;
+  }
+
+  .footer-logo-iam {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 16px;
+    color: var(--taupe-light);
+    line-height: 1;
+    letter-spacing: 0.02em;
+  }
+
+  .footer-logo-hosp {
+    font-family: 'Jost', sans-serif;
+    font-weight: 400;
+    font-size: 8px;
+    color: var(--taupe-light);
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+  }
+
+  /* DIVIDER */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 36px 0;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .header { padding: 20px 24px; }
+    .content { padding: 24px 24px 80px; }
+    .tabs { padding: 0 24px; }
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .reviews-grid { grid-template-columns: 1fr; }
+    .grid-2 { grid-template-columns: 1fr; }
+    .tab { padding: 14px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">
+    <span class="logo-iam">iam</span>
+    <span class="logo-hospitality">Hospitality</span>
+  </div>
+  <div class="header-meta">
+    <span>Experience Dashboard</span>
+    <span id="current-date"></span>
+  </div>
+</header>
+
+<nav class="tabs">
+  <button class="tab active" onclick="switchTab('semanal', this)">Semanal</button>
+  <button class="tab" onclick="switchTab('mensual', this)">Mensual</button>
+</nav>
+
+<main class="content">
+
+  <!-- SEMANAL -->
+  <div class="tab-panel active" id="tab-semanal">
+
+    <div class="section-header">
+      <h1 class="section-title">Semana en curso</h1>
+      <span class="section-sub">Ejecución de experiencias</span>
+    </div>
+
+    <div class="period-bar" id="week-selector">
+      <button class="period-btn active" onclick="selectWeek('S15', this)">Sem 15</button>
+      <button class="period-btn" onclick="selectWeek('S14', this)">Sem 14</button>
+      <button class="period-btn" onclick="selectWeek('S13', this)">Sem 13</button>
+      <button class="period-btn" onclick="selectWeek('S12', this)">Sem 12</button>
+      <button class="period-btn" onclick="selectWeek('S11', this)">Sem 11</button>
+      <button class="period-btn" onclick="selectWeek('S10', this)">Sem 10</button>
+      <button class="period-btn" onclick="selectWeek('S9', this)">Sem 9</button>
+      <button class="period-btn" onclick="selectWeek('S8', this)">Sem 8</button>
+      <button class="period-btn" onclick="selectWeek('S7', this)">Sem 7</button>
+      <button class="period-btn" onclick="selectWeek('S6', this)">Sem 6</button>
+    </div>
+
+    <!-- KPIs consolidado -->
+    <div class="kpi-grid" id="kpi-consolidado">
+      <!-- filled by JS -->
+    </div>
+
+    <!-- Reviews -->
+    <div class="chart-title">Calificaciones por plataforma — consolidado</div>
+    <div id="reviews-consolidado">
+      <!-- filled by JS -->
+    </div>
+
+    <!-- Tabla por unidad -->
+    <div class="chart-title" style="margin-bottom:16px">Desglose por unidad</div>
+    <div class="table-wrapper">
+      <table class="prop-table" id="prop-table-semanal">
+        <thead>
+          <tr>
+            <th>Unidad</th>
+            <th>Total cuentas</th>
+            <th>Visitas nuevas</th>
+            <th>🍹 Margaritas</th>
+            <th>🎂 Pasteles</th>
+            <th>🌮 Tacos</th>
+            <th>👥 Frec.</th>
+          </tr>
+        </thead>
+        <tbody id="prop-tbody-semanal"></tbody>
+      </table>
+    </div>
+
+    <!-- Ranking ejecución -->
+    <div class="divider"></div>
+    <div class="chart-title" style="margin-bottom:16px">Ranking de ejecución — semana</div>
+    <div class="ranking-list" id="ranking-semanal"></div>
+
+  </div>
+
+  <!-- MENSUAL -->
+  <div class="tab-panel" id="tab-mensual">
+
+    <div class="section-header">
+      <h1 class="section-title">Acumulado mensual</h1>
+      <span class="section-sub" id="mensual-sub">Abril 2026</span>
+    </div>
+
+    <!-- Month selector -->
+    <div class="period-bar" id="month-selector">
+      <button class="period-btn active" onclick="selectMonth('abril', this)">Abril</button>
+      <button class="period-btn" onclick="selectMonth('marzo', this)">Marzo</button>
+      <button class="period-btn" onclick="selectMonth('febrero', this)">Febrero</button>
+      <button class="period-btn" onclick="selectMonth('enero', this)">Enero</button>
+      <button class="period-btn" onclick="selectMonth('todo', this)">Todo el período</button>
+    </div>
+
+    <!-- KPIs mensuales -->
+    <div class="kpi-grid" id="kpi-mensual"></div>
+
+    <!-- Reviews mensuales -->
+    <div class="chart-title">Calificaciones por plataforma — acumulado</div>
+    <div id="reviews-mensual"></div>
+
+    <!-- Tendencia semanal (SVG chart) -->
+    <div class="chart-section">
+      <div class="chart-title">Tendencia Google Reviews por unidad — Semanas 6 a 15</div>
+      <div class="chart-container">
+        <svg class="chart-svg" id="trend-chart" height="160"></svg>
+      </div>
+    </div>
+
+    <!-- Tabla acumulado mensual -->
+    <div class="chart-title" style="margin-bottom:16px">Acumulado por unidad</div>
+    <div class="table-wrapper">
+      <table class="prop-table">
+        <thead>
+          <tr>
+            <th>Unidad</th>
+            <th>Total cuentas</th>
+            <th>Visitas nuevas</th>
+            <th>🍹 Margaritas</th>
+            <th>🎂 Pasteles</th>
+            <th>🌮 Tacos</th>
+            <th>👥 Frec.</th>
+          </tr>
+        </thead>
+        <tbody id="prop-tbody-mensual"></tbody>
+      </table>
+    </div>
+
+    <!-- Ranking mensual -->
+    <div class="divider"></div>
+    <div class="chart-title" style="margin-bottom:16px">Ranking de ejecución — mes</div>
+    <div class="ranking-list" id="ranking-mensual"></div>
+
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span class="footer-logo-iam">iam</span>
+  <span class="footer-logo-hosp">Hospitality</span>
+</footer>
+
+<script>
+// =====================
+// DATA — actualizar cada semana
+// =====================
+
+const PROPIEDADES = ['Cuerno Calzada', 'Cuerno Andares', 'Cuerno Masaryk', 'Cuerno NY'];
+
+const META_MARGARITAS = 0.85;
+const META_PASTELES   = 0.90;
+const META_TACOS      = 0.30;
+const META_FRECUENTES = 0.40;
+
+// Experiencias — pendiente captura real (datos de ejemplo hasta recibir Excel)
+const DATA_SEMANAL = {
+  // cumples = Birthday tag col I de GuestCenter (reservaciones etiquetadas como cumpleaños)
+  // cuentas, nuevas, margs, pasteles, tacos, frec = captura manual semanal
+  S15: [
+    { prop: 'Cuerno Calzada', cuentas: 457,  nuevas: 260, margs: 175, pasteles: 115, cumples: 65, tacos: 17,  frec: 197 },
+    { prop: 'Cuerno Andares', cuentas: 647,  nuevas: 356, margs: 94,  pasteles: 97,  cumples: 79, tacos: 28,  frec: 291 },
+    { prop: 'Cuerno Masaryk', cuentas: 501,  nuevas: 346, margs: 256, pasteles: 180, cumples: 73, tacos: 85,  frec: 155 },
+    { prop: 'Cuerno NY',      cuentas: 0,    nuevas: 0,   margs: 0,   pasteles: 0,   cumples: 0,  tacos: 0,   frec: 0   },
+  ],
+  S14: [
+    { prop: 'Cuerno Calzada', cuentas: 210, nuevas: 88, margs: 72, pasteles: 5, cumples: 73, tacos: 58, frec: 90 },
+    { prop: 'Cuerno Andares', cuentas: 178, nuevas: 65, margs: 60, pasteles: 4, cumples: 61, tacos: 40, frec: 85 },
+    { prop: 'Cuerno Masaryk', cuentas: 195, nuevas: 80, margs: 50, pasteles: 6, cumples: 65, tacos: 70, frec: 75 },
+    { prop: 'Cuerno NY',      cuentas: 160, nuevas: 55, margs: 30, pasteles: 3, cumples: 0,  tacos: 35, frec: 60 },
+  ],
+  S13: [
+    { prop: 'Cuerno Calzada', cuentas: 200, nuevas: 82, margs: 68, pasteles: 4, cumples: 66, tacos: 50, frec: 85 },
+    { prop: 'Cuerno Andares', cuentas: 170, nuevas: 60, margs: 55, pasteles: 3, cumples: 67, tacos: 38, frec: 80 },
+    { prop: 'Cuerno Masaryk', cuentas: 185, nuevas: 75, margs: 48, pasteles: 5, cumples: 73, tacos: 65, frec: 70 },
+    { prop: 'Cuerno NY',      cuentas: 150, nuevas: 50, margs: 28, pasteles: 2, cumples: 0,  tacos: 30, frec: 55 },
+  ],
+  S12: [
+    { prop: 'Cuerno Calzada', cuentas: 190, nuevas: 78, margs: 60, pasteles: 3, cumples: 81, tacos: 45, frec: 80 },
+    { prop: 'Cuerno Andares', cuentas: 165, nuevas: 58, margs: 50, pasteles: 2, cumples: 90, tacos: 35, frec: 75 },
+    { prop: 'Cuerno Masaryk', cuentas: 180, nuevas: 70, margs: 45, pasteles: 4, cumples: 92, tacos: 60, frec: 68 },
+    { prop: 'Cuerno NY',      cuentas: 145, nuevas: 48, margs: 25, pasteles: 2, cumples: 0,  tacos: 28, frec: 52 },
+  ],
+  S11: [
+    { prop: 'Cuerno Calzada', cuentas: 185, nuevas: 75, margs: 58, pasteles: 3, cumples: 92, tacos: 42, frec: 78 },
+    { prop: 'Cuerno Andares', cuentas: 160, nuevas: 55, margs: 46, pasteles: 2, cumples: 68, tacos: 33, frec: 72 },
+    { prop: 'Cuerno Masaryk', cuentas: 175, nuevas: 68, margs: 42, pasteles: 4, cumples: 73, tacos: 58, frec: 65 },
+    { prop: 'Cuerno NY',      cuentas: 140, nuevas: 46, margs: 22, pasteles: 1, cumples: 0,  tacos: 26, frec: 50 },
+  ],
+  S10: [
+    { prop: 'Cuerno Calzada', cuentas: 182, nuevas: 74, margs: 56, pasteles: 2, cumples: 84, tacos: 40, frec: 76 },
+    { prop: 'Cuerno Andares', cuentas: 158, nuevas: 54, margs: 44, pasteles: 2, cumples: 78, tacos: 31, frec: 70 },
+    { prop: 'Cuerno Masaryk', cuentas: 172, nuevas: 66, margs: 40, pasteles: 3, cumples: 84, tacos: 55, frec: 63 },
+    { prop: 'Cuerno NY',      cuentas: 138, nuevas: 44, margs: 20, pasteles: 1, cumples: 0,  tacos: 24, frec: 48 },
+  ],
+  S9: [
+    { prop: 'Cuerno Calzada', cuentas: 178, nuevas: 70, margs: 52, pasteles: 2, cumples: 69, tacos: 38, frec: 74 },
+    { prop: 'Cuerno Andares', cuentas: 155, nuevas: 52, margs: 40, pasteles: 1, cumples: 65, tacos: 29, frec: 68 },
+    { prop: 'Cuerno Masaryk', cuentas: 168, nuevas: 62, margs: 36, pasteles: 3, cumples: 87, tacos: 52, frec: 60 },
+    { prop: 'Cuerno NY',      cuentas: 135, nuevas: 42, margs: 18, pasteles: 1, cumples: 0,  tacos: 22, frec: 45 },
+  ],
+  S8: [
+    { prop: 'Cuerno Calzada', cuentas: 175, nuevas: 68, margs: 50, pasteles: 2, cumples: 81, tacos: 36, frec: 72 },
+    { prop: 'Cuerno Andares', cuentas: 152, nuevas: 50, margs: 38, pasteles: 1, cumples: 72, tacos: 27, frec: 66 },
+    { prop: 'Cuerno Masaryk', cuentas: 165, nuevas: 60, margs: 34, pasteles: 2, cumples: 75, tacos: 50, frec: 58 },
+    { prop: 'Cuerno NY',      cuentas: 132, nuevas: 40, margs: 16, pasteles: 1, cumples: 0,  tacos: 20, frec: 43 },
+  ],
+  S7: [
+    { prop: 'Cuerno Calzada', cuentas: 172, nuevas: 66, margs: 48, pasteles: 1, cumples: 76, tacos: 34, frec: 70 },
+    { prop: 'Cuerno Andares', cuentas: 150, nuevas: 48, margs: 36, pasteles: 1, cumples: 70, tacos: 25, frec: 64 },
+    { prop: 'Cuerno Masaryk', cuentas: 162, nuevas: 58, margs: 32, pasteles: 2, cumples: 70, tacos: 48, frec: 56 },
+    { prop: 'Cuerno NY',      cuentas: 130, nuevas: 38, margs: 14, pasteles: 1, cumples: 0,  tacos: 18, frec: 41 },
+  ],
+  S6: [
+    { prop: 'Cuerno Calzada', cuentas: 168, nuevas: 64, margs: 45, pasteles: 1, cumples: 92, tacos: 32, frec: 68 },
+    { prop: 'Cuerno Andares', cuentas: 148, nuevas: 46, margs: 34, pasteles: 1, cumples: 81, tacos: 23, frec: 62 },
+    { prop: 'Cuerno Masaryk', cuentas: 158, nuevas: 55, margs: 30, pasteles: 2, cumples: 66, tacos: 45, frec: 54 },
+    { prop: 'Cuerno NY',      cuentas: 128, nuevas: 36, margs: 12, pasteles: 0, cumples: 0,  tacos: 16, frec: 39 },
+  ],
+};
+
+// Datos mensuales acumulados
+
+// Reviews reales — fuente: Verbalizaciones_y_Calificaciones CSV
+const REVIEWS_HISTORICO = {
+  6:  { 'Cuerno Andares': {google:4.9,opentable:4.7,tripadvisor:4.9,facebook:100}, 'Cuerno Calzada': {google:4.9,opentable:4.7,tripadvisor:4.9,facebook:68},  'Cuerno Masaryk': {google:4.8,opentable:4.8,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.9,opentable:null,tripadvisor:4.0,facebook:null} },
+  7:  { 'Cuerno Andares': {google:4.9,opentable:4.7,tripadvisor:4.9,facebook:100}, 'Cuerno Calzada': {google:4.9,opentable:4.7,tripadvisor:4.9,facebook:68},  'Cuerno Masaryk': {google:4.8,opentable:4.9,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.9,opentable:null,tripadvisor:4.0,facebook:null} },
+  8:  { 'Cuerno Andares': {google:4.9,opentable:4.8,tripadvisor:4.9,facebook:100}, 'Cuerno Calzada': {google:4.9,opentable:4.7,tripadvisor:4.9,facebook:68},  'Cuerno Masaryk': {google:4.8,opentable:4.8,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.9,opentable:null,tripadvisor:4.0,facebook:null} },
+  9:  { 'Cuerno Andares': {google:4.9,opentable:4.7,tripadvisor:4.9,facebook:100}, 'Cuerno Calzada': {google:4.9,opentable:4.7,tripadvisor:4.9,facebook:68},  'Cuerno Masaryk': {google:4.8,opentable:4.5,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.9,opentable:null,tripadvisor:4.0,facebook:null} },
+  10: { 'Cuerno Andares': {google:4.9,opentable:4.7,tripadvisor:4.9,facebook:100}, 'Cuerno Calzada': {google:4.9,opentable:4.7,tripadvisor:4.9,facebook:68},  'Cuerno Masaryk': {google:4.8,opentable:5.0,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.9,opentable:null,tripadvisor:4.2,facebook:null} },
+  11: { 'Cuerno Andares': {google:4.9,opentable:4.7,tripadvisor:4.9,facebook:100}, 'Cuerno Calzada': {google:4.9,opentable:4.7,tripadvisor:4.9,facebook:68},  'Cuerno Masaryk': {google:4.8,opentable:4.9,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.9,opentable:null,tripadvisor:4.2,facebook:null} },
+  12: { 'Cuerno Andares': {google:4.9,opentable:4.7,tripadvisor:4.9,facebook:100}, 'Cuerno Calzada': {google:4.9,opentable:4.7,tripadvisor:4.9,facebook:68},  'Cuerno Masaryk': {google:4.8,opentable:4.7,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.9,opentable:null,tripadvisor:4.2,facebook:null} },
+  13: { 'Cuerno Andares': {google:4.9,opentable:4.8,tripadvisor:4.9,facebook:100}, 'Cuerno Calzada': {google:4.9,opentable:4.7,tripadvisor:4.9,facebook:68},  'Cuerno Masaryk': {google:4.8,opentable:4.8,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.8,opentable:null,tripadvisor:4.2,facebook:null} },
+  14: { 'Cuerno Andares': {google:4.9,opentable:4.6,tripadvisor:4.9,facebook:100}, 'Cuerno Calzada': {google:4.9,opentable:4.8,tripadvisor:4.9,facebook:68},  'Cuerno Masaryk': {google:4.8,opentable:2.7,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.8,opentable:null,tripadvisor:4.2,facebook:null} },
+  15: { 'Cuerno Andares': {google:4.9,opentable:4.8,tripadvisor:4.9,facebook:100}, 'Cuerno Calzada': {google:4.9,opentable:4.7,tripadvisor:4.9,facebook:68},  'Cuerno Masaryk': {google:4.8,opentable:4.7,tripadvisor:4.8,facebook:92},  'Cuerno NY': {google:4.8,opentable:4.7,tripadvisor:4.2,facebook:null} },
+};
+
+function getReviewsForWeek(semKey) {
+  const num = parseInt(semKey.replace('S',''));
+  const weekData = REVIEWS_HISTORICO[num] || {};
+  return {
+    unidades: PROPIEDADES.map(p => ({
+      prop: p,
+      google:      weekData[p]?.google      ?? null,
+      opentable:   weekData[p]?.opentable   ?? null,
+      tripadvisor: weekData[p]?.tripadvisor ?? null,
+      facebook:    weekData[p]?.facebook    ?? null,
+    }))
+  };
+}
+
+function getReviewsMensual() {
+  // Average across all weeks for each property
+  return {
+    unidades: PROPIEDADES.map(p => {
+      const weeks = Object.values(REVIEWS_HISTORICO);
+      const avg = (key) => {
+        const vals = weeks.map(w => w[p]?.[key]).filter(v => v !== null && v !== undefined);
+        return vals.length ? Math.round((vals.reduce((a,b)=>a+b,0)/vals.length)*10)/10 : null;
+      };
+      return { prop: p, google: avg('google'), opentable: avg('opentable'), tripadvisor: avg('tripadvisor'), facebook: avg('facebook') };
+    })
+  };
+}
+
+// Semanas por mes (2026)
+const MESES = {
+  enero:   { label: 'Enero 2026',            semanas: ['S1','S2','S3','S4'] },
+  febrero: { label: 'Febrero 2026',           semanas: ['S5','S6','S7','S8','S9'] },
+  marzo:   { label: 'Marzo 2026',             semanas: ['S10','S11','S12','S13'] },
+  abril:   { label: 'Abril 2026',             semanas: ['S14','S15'] },
+  todo:    { label: 'Enero — Abril 2026',     semanas: ['S6','S7','S8','S9','S10','S11','S12','S13','S14','S15'] },
+};
+
+let currentMes = 'abril';
+
+function selectMonth(mes, btn) {
+  currentMes = mes;
+  document.querySelectorAll('#month-selector .period-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderMensual();
+  setTimeout(renderTrendChart, 50);
+}
+
+const PROP_COLORS = {
+  'Cuerno Calzada': '#9F9782',
+  'Cuerno Andares': '#7a9a78',
+  'Cuerno Masaryk': '#c4a96a',
+  'Cuerno NY':      '#c17a6a',
+};
+
+// =====================
+// UTILS
+// =====================
+
+let currentWeek = 'S15';
+
+function pct(a, b) { return b > 0 ? a / b : 0; }
+function fmt(n)    { return Math.round(n * 100) + '%'; }
+function colorClass(val, meta) {
+  if (val >= meta * 0.95) return 'good';
+  if (val >= meta * 0.75) return 'warn';
+  return 'bad';
+}
+function stars(rating) {
+  let html = '<div class="stars">';
+  for (let i = 1; i <= 5; i++) {
+    html += `<div class="star ${i <= Math.round(rating) ? 'filled' : ''}"></div>`;
+  }
+  return html + '</div>';
+}
+
+// =====================
+// RENDER KPIs
+// =====================
+
+function renderKPIs(data, containerId) {
+  const totalCuentas  = data.reduce((s, d) => s + d.cuentas, 0);
+  const totalNuevas   = data.reduce((s, d) => s + d.nuevas, 0);
+  const totalMargs    = data.reduce((s, d) => s + d.margs, 0);
+  const totalPasteles = data.reduce((s, d) => s + d.pasteles, 0);
+  const totalCumples  = data.reduce((s, d) => s + d.cumples, 0);
+  const totalTacos    = data.reduce((s, d) => s + d.tacos, 0);
+  const totalFrec     = data.reduce((s, d) => s + d.frec, 0);
+
+  const pMargs    = pct(totalMargs, totalNuevas);
+  const pPasteles = pct(totalPasteles, totalCumples);
+  const pTacos    = pct(totalTacos, totalCuentas);
+  const pFrec     = pct(totalFrec, totalCuentas);
+
+  const kpis = [
+    { label: 'Margaritas de cortesía', value: fmt(pMargs),    meta: META_MARGARITAS, fill: pMargs,    raw: `${totalMargs} de ${totalNuevas} visitas nuevas` },
+    { label: 'Pasteles entregados',    value: fmt(pPasteles), meta: META_PASTELES,   fill: pPasteles, raw: `${totalPasteles} de ${totalCumples} cumpleaños` },
+    { label: 'Tacos taqueros',         value: fmt(pTacos),    meta: META_TACOS,      fill: pTacos,    raw: `${totalTacos} de ${totalCuentas} cuentas` },
+    { label: 'Clientes frecuentes',    value: fmt(pFrec),     meta: META_FRECUENTES, fill: pFrec,     raw: `${totalFrec} de ${totalCuentas} cuentas` },
+    { label: 'Total cuentas',          value: totalCuentas,   meta: null,            fill: null,      raw: 'todas las unidades' },
+    { label: 'Visitas nuevas',         value: totalNuevas,    meta: null,            fill: null,      raw: `${fmt(pct(totalNuevas, totalCuentas))} del total` },
+  ];
+
+  const el = document.getElementById(containerId);
+  el.innerHTML = kpis.map(k => {
+    const cls = k.meta !== null ? colorClass(k.fill, k.meta) : '';
+    const barPct = k.fill !== null ? Math.min(k.fill * 100, 100) : null;
+    return `
+      <div class="kpi-card">
+        <div class="kpi-label">${k.label}</div>
+        <div class="kpi-value ${cls}">${k.value}</div>
+        <div class="kpi-meta">${k.raw}</div>
+        ${barPct !== null ? `<div class="kpi-bar"><div class="kpi-bar-fill ${cls}" style="width:${barPct}%"></div></div>` : ''}
+      </div>
+    `;
+  }).join('');
+}
+
+// =====================
+// RENDER REVIEWS
+// =====================
+
+function renderReviews(reviewsData, containerId) {
+  const el = document.getElementById(containerId);
+  const props = reviewsData.unidades || [];
+
+  // Consolidated avg cards (4 platforms)
+  const platforms = [
+    { key: 'google',      name: 'Google',      max: 5  },
+    { key: 'opentable',   name: 'OpenTable',   max: 5  },
+    { key: 'tripadvisor', name: 'TripAdvisor', max: 5  },
+    { key: 'facebook',    name: 'Facebook',    max: 100, isFb: true },
+  ];
+
+  const avgCards = platforms.map(p => {
+    const vals = props.map(r => r[p.key]).filter(v => v !== null && v !== undefined);
+    const avg = vals.length ? (vals.reduce((a,b) => a+b, 0) / vals.length) : null;
+    const display = avg !== null ? (p.isFb ? Math.round(avg) + '%' : avg.toFixed(1)) : '—';
+    return `
+      <div class="review-card">
+        <div class="review-platform">${p.name}</div>
+        <div class="review-rating">${display}</div>
+        <div class="review-count">promedio consolidado</div>
+        ${!p.isFb && avg ? stars(avg) : ''}
+      </div>`;
+  }).join('');
+
+  // Per-property table
+  const tableRows = props.map(r => `
+    <tr>
+      <td class="prop-name">${r.prop}</td>
+      <td style="text-align:center;font-size:13px;color:var(--taupe-dark)">${r.google ?? '—'}</td>
+      <td style="text-align:center;font-size:13px;color:var(--taupe-dark)">${r.opentable ?? '—'}</td>
+      <td style="text-align:center;font-size:13px;color:var(--taupe-dark)">${r.tripadvisor ?? '—'}</td>
+      <td style="text-align:center;font-size:13px;color:var(--taupe-dark)">${r.facebook !== null && r.facebook !== undefined ? r.facebook + '%' : '—'}</td>
+    </tr>`).join('');
+
+  el.innerHTML = `
+    <div style="grid-column:1/-1">
+      <div class="reviews-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:16px">${avgCards}</div>
+      <table class="prop-table">
+        <thead><tr>
+          <th>Unidad</th>
+          <th style="text-align:center">Google</th>
+          <th style="text-align:center">OpenTable</th>
+          <th style="text-align:center">TripAdvisor</th>
+          <th style="text-align:center">Facebook</th>
+        </tr></thead>
+        <tbody>${tableRows}</tbody>
+      </table>
+    </div>`;
+}
+
+// =====================
+// RENDER TABLE
+// =====================
+
+function renderTable(data, tbodyId) {
+  const tbody = document.getElementById(tbodyId);
+  tbody.innerHTML = data.map(d => {
+    const pM = pct(d.margs, d.nuevas);
+    const pP = pct(d.pasteles, d.cumples);
+    const pT = pct(d.tacos, d.cuentas);
+    const pF = pct(d.frec, d.cuentas);
+
+    function cell(val, meta) {
+      const cls = colorClass(val, meta);
+      const w = Math.min(val * 100, 100);
+      return `<td><div class="pct-cell">
+        <div class="mini-bar"><div class="mini-bar-fill ${cls}" style="width:${w}%"></div></div>
+        <span class="pct-num ${cls}">${fmt(val)}</span>
+      </div></td>`;
+    }
+
+    return `
+      <tr>
+        <td class="prop-name">${d.prop}</td>
+        <td>${d.cuentas}</td>
+        <td>${d.nuevas}</td>
+        ${cell(pM, META_MARGARITAS)}
+        ${cell(pP, META_PASTELES)}
+        ${cell(pT, META_TACOS)}
+        ${cell(pF, META_FRECUENTES)}
+      </tr>
+    `;
+  }).join('');
+}
+
+// =====================
+// RENDER RANKING
+// =====================
+
+function renderRanking(data, containerId) {
+  // Score = promedio de 4 métricas vs sus metas
+  const scored = data.map(d => {
+    const pM = pct(d.margs, d.nuevas)    / META_MARGARITAS;
+    const pP = pct(d.pasteles, d.cumples) / META_PASTELES;
+    const pT = pct(d.tacos, d.cuentas)   / META_TACOS;
+    const pF = pct(d.frec, d.cuentas)    / META_FRECUENTES;
+    const score = Math.min(((pM + pP + pT + pF) / 4) * 100, 100);
+    return { prop: d.prop, score };
+  }).sort((a, b) => b.score - a.score);
+
+  const maxScore = Math.max(...scored.map(s => s.score));
+
+  const el = document.getElementById(containerId);
+  el.innerHTML = scored.map((s, i) => `
+    <div class="ranking-item">
+      <span class="rank-num">${i + 1}</span>
+      <span class="rank-name">${s.prop}</span>
+      <div class="rank-bar">
+        <div class="rank-bar-fill" style="width:${(s.score / 100) * 100}%"></div>
+      </div>
+      <span class="rank-score">${Math.round(s.score)}%</span>
+    </div>
+  `).join('');
+}
+
+// =====================
+// TREND CHART
+// =====================
+
+function renderTrendChart() {
+  const svg = document.getElementById('trend-chart');
+  if (!svg) return;
+  const W = Math.max(svg.parentElement.offsetWidth - 48, 400);
+  const H = 200;
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+
+  const pad = { t: 24, r: 80, b: 36, l: 44 };
+  const sems = SEMANAS_ORDEN;
+  const n = sems.length;
+  const xStep = (W - pad.l - pad.r) / (n - 1);
+
+  function xPos(i)   { return pad.l + i * xStep; }
+  function yPos(val) { return val === null ? null : pad.t + (5.0 - val) / (5.0 - 4.0) * (H - pad.t - pad.b); }
+
+  // Grid
+  let html = '';
+  [4.0, 4.3, 4.6, 5.0].forEach(v => {
+    const y = yPos(v);
+    html += `<line x1="${pad.l}" y1="${y}" x2="${W - pad.r}" y2="${y}" stroke="#9F978218" stroke-width="1"/>`;
+    html += `<text x="${pad.l - 6}" y="${y+4}" text-anchor="end" fill="#9F9782" font-size="9" font-family="Jost">${v.toFixed(1)}</text>`;
+  });
+
+  // X labels
+  sems.forEach((s, i) => {
+    html += `<text x="${xPos(i)}" y="${H - pad.b + 16}" text-anchor="middle" fill="#9F9782" font-size="9" font-family="Jost">S${s}</text>`;
+  });
+
+  // Lines per property (Google only for clarity)
+  PROPIEDADES.forEach(prop => {
+    const color = PROP_COLORS[prop];
+    const points = sems.map((s, i) => {
+      const val = REVIEWS_HISTORICO[s]?.[prop]?.google ?? null;
+      const y = yPos(val);
+      return y !== null ? { x: xPos(i), y, val } : null;
+    });
+
+    // Draw path segments (skip nulls)
+    let pathD = '';
+    let dotsHtml = '';
+    points.forEach((pt, i) => {
+      if (!pt) return;
+      const prev = points.slice(0, i).reverse().find(p => p !== null);
+      pathD += prev ? ` L${pt.x} ${pt.y}` : ` M${pt.x} ${pt.y}`;
+      dotsHtml += `<circle cx="${pt.x}" cy="${pt.y}" r="3" fill="${color}"/>`;
+    });
+
+    html += `<path d="${pathD}" fill="none" stroke="${color}" stroke-width="1.5" stroke-linejoin="round" opacity="0.85"/>`;
+    html += dotsHtml;
+
+    // Legend label at end
+    const last = [...points].reverse().find(p => p !== null);
+    if (last) {
+      html += `<text x="${last.x + 6}" y="${last.y + 4}" fill="${color}" font-size="9" font-family="Jost">${prop.replace('Cuerno ','')}</text>`;
+    }
+  });
+
+  svg.innerHTML = `<defs><linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#9F9782" stop-opacity="0.08"/><stop offset="100%" stop-color="#9F9782" stop-opacity="0"/></linearGradient></defs>${html}`;
+}
+
+// =====================
+// TAB SWITCH
+// =====================
+
+function switchTab(tab, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  btn.classList.add('active');
+  if (tab === 'mensual') setTimeout(renderTrendChart, 50);
+}
+
+// =====================
+// WEEK SELECTOR
+// =====================
+
+function selectWeek(week, btn) {
+  currentWeek = week;
+  document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderSemanal();
+}
+
+// =====================
+// FULL RENDER
+// =====================
+
+function renderSemanal() {
+  const data = DATA_SEMANAL[currentWeek] || DATA_SEMANAL['S14'];
+  renderKPIs(data, 'kpi-consolidado');
+  renderReviews(getReviewsForWeek(currentWeek), 'reviews-consolidado');
+  renderTable(data, 'prop-tbody-semanal');
+  renderRanking(data, 'ranking-semanal');
+}
+
+function renderMensual() {
+  const mes = MESES[currentMes];
+  const semanasDelMes = mes.semanas.filter(s => DATA_SEMANAL[s]);
+
+  // Aggregate only weeks in the selected month
+  const mensualData = PROPIEDADES.map((p, i) => {
+    let total = { prop: p, cuentas: 0, nuevas: 0, margs: 0, pasteles: 0, cumples: 0, tacos: 0, frec: 0 };
+    semanasDelMes.forEach(sem => {
+      const d = DATA_SEMANAL[sem][i];
+      if (d) { total.cuentas+=d.cuentas; total.nuevas+=d.nuevas; total.margs+=d.margs; total.pasteles+=d.pasteles; total.cumples+=d.cumples; total.tacos+=d.tacos; total.frec+=d.frec; }
+    });
+    return total;
+  });
+
+  // Update subtitle
+  document.getElementById('mensual-sub').textContent = mes.label + ' · Sems ' + semanasDelMes.map(s=>s.replace('S','')).join(', ');
+
+  // Reviews: average of the month's weeks
+  const semNums = semanasDelMes.map(s => parseInt(s.replace('S','')));
+  const reviewsMes = {
+    unidades: PROPIEDADES.map(p => {
+      const avg = (key) => {
+        const vals = semNums.map(n => REVIEWS_HISTORICO[n]?.[p]?.[key]).filter(v => v !== null && v !== undefined);
+        return vals.length ? Math.round((vals.reduce((a,b)=>a+b,0)/vals.length)*10)/10 : null;
+      };
+      return { prop: p, google: avg('google'), opentable: avg('opentable'), tripadvisor: avg('tripadvisor'), facebook: avg('facebook') };
+    })
+  };
+
+  renderKPIs(mensualData, 'kpi-mensual');
+  renderReviews(reviewsMes, 'reviews-mensual');
+  renderTable(mensualData, 'prop-tbody-mensual');
+  renderRanking(mensualData, 'ranking-mensual');
+}
+
+// Date
+document.getElementById('current-date').textContent =
+  new Date().toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' });
+
+// Init
+renderSemanal();
+renderMensual();
+</script>
+</body>
+</html>
